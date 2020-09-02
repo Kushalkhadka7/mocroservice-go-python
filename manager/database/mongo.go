@@ -44,6 +44,8 @@ func (db *MongoDB) CreateClient() (*mongo.Client, error) {
 		return nil, err
 	}
 
+	fmt.Println("Connected to MongoDB on port : 27017")
+
 	return client, nil
 }
 

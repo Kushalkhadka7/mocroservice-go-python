@@ -31,9 +31,10 @@ func TestSave(t *testing.T) {
 
 			laptopstore := NewLaptopStore(db)
 
-			err := laptopstore.Save()
+			data, err := laptopstore.Save()
 
 			fmt.Println(err)
+			fmt.Println(data)
 
 		})
 	}

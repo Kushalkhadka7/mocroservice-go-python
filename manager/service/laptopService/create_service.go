@@ -26,11 +26,10 @@ func (service *LaptopServer) CreateLaptop(context.Context, *laptop.CreateLaptopR
 
 // SayHello creates new laptop.
 func (service *LaptopServer) SayHello(context.Context, *laptop.HelloWorld) (*laptop.HelloWorld, error) {
-	fmt.Println("hell hello i am called and i am happy")
-	err := service.Store.Save()
+	data, err := service.Store.Save()
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	return data, nil
 }

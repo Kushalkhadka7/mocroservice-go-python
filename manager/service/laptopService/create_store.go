@@ -1,16 +1,15 @@
 package laptopservice
 
 import (
-	"context"
 	"fmt"
+	laptop "manager/pb"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // LaptopStore new.
 type LaptopStore interface {
-	Save() error
+	Save() (*laptop.HelloWorld, error)
 }
 
 // LaptopInterface interface.
@@ -28,21 +27,8 @@ func NewLaptopStore(db LaptopInterface) LaptopStore {
 }
 
 // Save new laptop.
-func (store *CreateLaptopStore) Save() error {
-	result := struct {
-		Name string
-		id   string
-	}{}
+func (store *CreateLaptopStore) Save() (*laptop.HelloWorld, error) {
+	fmt.Println("hell hello i am called and i am happy")
 
-	data, err := store.Collection("laptop").Find(context.Background(), bson.D{})
-	if err != nil {
-		return err
-	}
-
-	data.Decode(&result)
-
-	fmt.Println("from save laptop")
-	fmt.Println(result)
-
-	return nil
+	return &laptop.HelloWorld{Hello: "hello howr are you"}, nil
 }
