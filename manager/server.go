@@ -39,10 +39,12 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 
 	monogDB := database.New()
 	dbClient, err := monogDB.CreateClient()
-	db := monogDB.InitializeDatabase(dbClient)
 	if err != nil {
 		return err
 	}
+
+	db := monogDB.InitializeDatabase(dbClient)
+
 
 	laptopStore := laptopservice.NewLaptopStore(db)
 	laptopService := laptopservice.NewLaptopService(laptopStore)

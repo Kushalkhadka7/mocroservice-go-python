@@ -1,7 +1,7 @@
 package laptopservice
 
 import (
-	"fmt"
+	"context"
 	laptop "manager/pb"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -9,26 +9,24 @@ import (
 
 // LaptopStore new.
 type LaptopStore interface {
-	Save() (*laptop.HelloWorld, error)
+	Save(ctx context.Context, laptop *laptop.Laptop) (*laptop.Laptop, error)
 }
-
-// LaptopInterface interface.
-type LaptopInterface interface{}
 
 // CreateLaptopStore new.
 type CreateLaptopStore struct {
 	*mongo.Database
-	DB LaptopInterface
+	DB DBInterface
 }
 
+// DBInterface interface.
+type DBInterface interface{}
+
 // NewLaptopStore laptop store.
-func NewLaptopStore(db LaptopInterface) LaptopStore {
+func NewLaptopStore(db DBInterface) LaptopStore {
 	return &CreateLaptopStore{DB: db}
 }
 
 // Save new laptop.
-func (store *CreateLaptopStore) Save() (*laptop.HelloWorld, error) {
-	fmt.Println("hell hello i am called and i am happy")
-
-	return &laptop.HelloWorld{Hello: "hello howr are you"}, nil
+func (store *CreateLaptopStore) Save(ctx context.Context, data *laptop.Laptop) (*laptop.Laptop, error) {
+	return data, nil
 }

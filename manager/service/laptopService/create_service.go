@@ -19,17 +19,12 @@ func NewLaptopService(store LaptopStore) laptop.LaptopServiceServer {
 }
 
 // CreateLaptop creates new laptop.
-func (service *LaptopServer) CreateLaptop(context.Context, *laptop.CreateLaptopRequest) (*laptop.CreateLaptopResponse, error) {
-	fmt.Println("hell hello i am called and i am happy")
-	return nil, fmt.Errorf("error from createlaptop service%s", "error")
-}
-
-// SayHello creates new laptop.
-func (service *LaptopServer) SayHello(context.Context, *laptop.HelloWorld) (*laptop.HelloWorld, error) {
-	data, err := service.Store.Save()
+func (service *LaptopServer) CreateLaptop(ctx context.Context, req *laptop.CreateLaptopRequest) (*laptop.CreateLaptopResponse, error) {
+	data := req.GetLaptop()
+	result, err := service.Store.Save(ctx, data)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
 
-	return data, nil
+	return &laptop.CreateLaptopResponse{Laptop: result}, nil
 }

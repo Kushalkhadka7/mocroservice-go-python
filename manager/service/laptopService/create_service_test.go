@@ -3,13 +3,12 @@ package laptopservice
 import (
 	"context"
 	"fmt"
+	laptop "manager/pb"
 	"manager/sample"
 	"testing"
 )
 
-var db LaptopStore
-
-func TestSave(t *testing.T) {
+func TestCreateLaptop(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
@@ -28,20 +27,20 @@ func TestSave(t *testing.T) {
 
 	for i := range testCases {
 		tc := testCases[i]
+
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			store := NewLaptopStore(db)
-			result, err := store.Save(context.Background(), sample.NewLaptop())
+			service := NewLaptopService(NewLaptopStore(db))
+			req := &laptop.CreateLaptopRequest{Laptop: sample.NewLaptop()}
+
+			result, err := service.CreateLaptop(context.Background(), req)
 			if err != nil {
 				panic(err)
 			}
 
-			if result == sample.NewLaptop() {
-				fmt.Println("Laptop creation successful")
-			}
+			fmt.Println(result)
 
 		})
 	}
-
 }

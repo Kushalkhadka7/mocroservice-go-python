@@ -3,9 +3,11 @@ package database
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 // MongoDB struct the database.
@@ -21,8 +23,8 @@ type MongoDB struct {
 func New() *MongoDB {
 	return &MongoDB{
 		port:       27017,
-		uri:        "mongodb://localhost:27017/microservice",
-		dbName:     "microservice",
+		uri:        "mongodb://localhost:27017",
+		dbName:     "mircoservices",
 		dbPassword: "Kushal123",
 	}
 }
@@ -30,36 +32,37 @@ func New() *MongoDB {
 // CreateClient initializes new mongo db client.
 func (db *MongoDB) CreateClient() (*mongo.Client, error) {
 	clientOptins := options.Client().ApplyURI(db.uri)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-	client, err := mongo.Connect(context.TODO(), clientOptins)
+	client, err := mongo.Connect(ctx, clientOptins)
 	if err != nil {
+		fmt.Println("error")
+		fmt.Println(err)
 		return nil, err
 	}
 
-	err = client.Ping(context.TODO(), nil)
-
-	fmt.Println(err)
-
+	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
+		fmt.Println(err)
 		return nil, err
 	}
 
-	fmt.Println("Connected to MongoDB on port : 27017")
-
+	fmt.Println("\nConnected to MongoDB on port : 27017")
 	return client, nil
 }
 
 // InitializeDatabase mongo database.
 func (db *MongoDB) InitializeDatabase(dbClient *mongo.Client) *mongo.Database {
-	databaseInstance := dbClient.Database(db.dbName)
-
-	return databaseInstance
+	return dbClient.Database("mircoservices")
 }
 
 // CloseDBConnection mongo db connection.
 func (db *MongoDB) CloseDBConnection(dbClient *mongo.Client) error {
-	err := dbClient.Disconnect(context.TODO())
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
+	err := dbClient.Disconnect(ctx)
 	if err != nil {
 		return err
 	}
