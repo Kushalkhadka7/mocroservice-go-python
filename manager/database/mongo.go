@@ -54,7 +54,7 @@ func (db *MongoDB) CreateClient() (*mongo.Client, error) {
 
 // InitializeDatabase mongo database.
 func (db *MongoDB) InitializeDatabase(dbClient *mongo.Client) *mongo.Database {
-	return dbClient.Database("mircoservices")
+	return dbClient.Database("microservices")
 }
 
 // CloseDBConnection mongo db connection.

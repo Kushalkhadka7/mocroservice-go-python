@@ -15,6 +15,11 @@ message CreateLaptopResponse{
 }
 
 
+message Hello{
+    string Hello = 1;
+}
+
 service LaptopService{
     rpc CreateLaptop(CreateLaptopRequest) returns (CreateLaptopResponse) {}
+    rpc SayHello(Hello) returns (CreateLaptopResponse) {}
 }

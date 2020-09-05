@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"manager/sample"
 	"testing"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
-var db LaptopStore
+var db *mongo.Database
 
 func TestSave(t *testing.T) {
 	t.Parallel()

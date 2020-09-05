@@ -45,7 +45,6 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 
 	db := monogDB.InitializeDatabase(dbClient)
 
-
 	laptopStore := laptopservice.NewLaptopStore(db)
 	laptopService := laptopservice.NewLaptopService(laptopStore)
 

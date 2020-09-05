@@ -69,7 +69,7 @@ func NewScreen() *laptop.Screen {
 // NewLaptop generates sampled data for laptop.
 func NewLaptop() *laptop.Laptop {
 	return &laptop.Laptop{
-		Id:    getRandomString(),
+		Id:    "",
 		Brand: getRandomCPUBrand(),
 		Name:  getRandomString(),
 		Cpu:   NewCPU(),
