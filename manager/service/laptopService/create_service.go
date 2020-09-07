@@ -17,8 +17,7 @@ type LaptopServer struct {
 }
 
 // NewLaptopService create new laptop store.
-func NewLaptopService(store LaptopStore) laptop.LaptopServiceServer {
-	fmt.Println("hello i am connected to grpc server")
+func NewLaptopService(store LaptopStore) *LaptopServer {
 	return &LaptopServer{Store: store}
 }
 

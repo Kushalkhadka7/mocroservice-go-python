@@ -8,20 +8,26 @@ import (
 	"testing"
 )
 
+var store = NewLaptopStore(db)
+var service = NewLaptopService(store)
+
 func TestCreateLaptop(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name  string
 		error string
+		req   *laptop.CreateLaptopRequest
 	}{
 		{
 			name:  "Test1",
 			error: "Not found",
+			req:   &laptop.CreateLaptopRequest{Laptop: sample.NewLaptop()},
 		},
 		{
 			name:  "Test2",
 			error: "Found",
+			req:   &laptop.CreateLaptopRequest{Laptop: sample.NewLaptop()},
 		},
 	}
 
@@ -31,10 +37,7 @@ func TestCreateLaptop(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			service := NewLaptopService(NewLaptopStore(db))
-			req := &laptop.CreateLaptopRequest{Laptop: sample.NewLaptop()}
-
-			result, err := service.CreateLaptop(context.Background(), req)
+			result, err := service.CreateLaptop(context.Background(), tc.req)
 			if err != nil {
 				panic(err)
 			}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package laptop;
+
+option go_package = ".;___laptop";
+
+import "proto/laptop.proto";
+
+message CreateLaptopRequest{
+    Laptop laptop = 1;
+}
+
+message CreateLaptopResponse{
+    Laptop laptop = 1;
+}
+
+
+message Hello{
+    string Hello = 1;
+}
+
+service LaptopService{
+    rpc CreateLaptop(CreateLaptopRequest) returns (CreateLaptopResponse) {}
+    rpc SayHello(Hello) returns (CreateLaptopResponse) {}
+}

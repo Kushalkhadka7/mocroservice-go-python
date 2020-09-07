@@ -18,11 +18,8 @@ type CreateLaptopStore struct {
 	*mongo.Database
 }
 
-// DBInterface interface.
-type DBInterface interface{}
-
 // NewLaptopStore laptop store.
-func NewLaptopStore(db *mongo.Database) LaptopStore {
+func NewLaptopStore(db *mongo.Database) *CreateLaptopStore {
 	return &CreateLaptopStore{db}
 }
 
