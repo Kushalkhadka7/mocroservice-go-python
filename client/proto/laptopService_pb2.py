@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\013.;___laptop',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19proto/laptopService.proto\x12\x06laptop\x1a\x12proto/laptop.proto\"5\n\x13\x43reateLaptopRequest\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"6\n\x14\x43reateLaptopResponse\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"\x16\n\x05Hello\x12\r\n\x05Hello\x18\x01 \x01(\t2\x97\x01\n\rLaptopService\x12K\n\x0c\x43reateLaptop\x12\x1b.laptop.CreateLaptopRequest\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x12\x39\n\x08SayHello\x12\r.laptop.Hello\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x42\rZ\x0b.;___laptopb\x06proto3'
+  serialized_pb=b'\n\x19proto/laptopService.proto\x12\x06laptop\x1a\x12proto/laptop.proto\"5\n\x13\x43reateLaptopRequest\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"6\n\x14\x43reateLaptopResponse\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"5\n\x13\x46\x65tchLaptopResposne\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"\x16\n\x05Hello\x12\r\n\x05Hello\x18\x01 \x01(\t\"\x15\n\x04Void\x12\r\n\x05Hello\x18\x01 \x01(\t2\xd9\x01\n\rLaptopService\x12K\n\x0c\x43reateLaptop\x12\x1b.laptop.CreateLaptopRequest\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x12@\n\x0f\x46\x65tchAllLaptops\x12\x0c.laptop.Void\x1a\x1b.laptop.FetchLaptopResposne\"\x00\x30\x01\x12\x39\n\x08SayHello\x12\r.laptop.Hello\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x42\rZ\x0b.;___laptopb\x06proto3'
   ,
   dependencies=[proto_dot_laptop__pb2.DESCRIPTOR,])
 
@@ -91,6 +91,38 @@ _CREATELAPTOPRESPONSE = _descriptor.Descriptor(
 )
 
 
+_FETCHLAPTOPRESPOSNE = _descriptor.Descriptor(
+  name='FetchLaptopResposne',
+  full_name='laptop.FetchLaptopResposne',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='laptop', full_name='laptop.FetchLaptopResposne.laptop', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=168,
+  serialized_end=221,
+)
+
+
 _HELLO = _descriptor.Descriptor(
   name='Hello',
   full_name='laptop.Hello',
@@ -118,15 +150,50 @@ _HELLO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=168,
-  serialized_end=190,
+  serialized_start=223,
+  serialized_end=245,
+)
+
+
+_VOID = _descriptor.Descriptor(
+  name='Void',
+  full_name='laptop.Void',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='Hello', full_name='laptop.Void.Hello', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=247,
+  serialized_end=268,
 )
 
 _CREATELAPTOPREQUEST.fields_by_name['laptop'].message_type = proto_dot_laptop__pb2._LAPTOP
 _CREATELAPTOPRESPONSE.fields_by_name['laptop'].message_type = proto_dot_laptop__pb2._LAPTOP
+_FETCHLAPTOPRESPOSNE.fields_by_name['laptop'].message_type = proto_dot_laptop__pb2._LAPTOP
 DESCRIPTOR.message_types_by_name['CreateLaptopRequest'] = _CREATELAPTOPREQUEST
 DESCRIPTOR.message_types_by_name['CreateLaptopResponse'] = _CREATELAPTOPRESPONSE
+DESCRIPTOR.message_types_by_name['FetchLaptopResposne'] = _FETCHLAPTOPRESPOSNE
 DESCRIPTOR.message_types_by_name['Hello'] = _HELLO
+DESCRIPTOR.message_types_by_name['Void'] = _VOID
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 CreateLaptopRequest = _reflection.GeneratedProtocolMessageType('CreateLaptopRequest', (_message.Message,), {
@@ -143,12 +210,26 @@ CreateLaptopResponse = _reflection.GeneratedProtocolMessageType('CreateLaptopRes
   })
 _sym_db.RegisterMessage(CreateLaptopResponse)
 
+FetchLaptopResposne = _reflection.GeneratedProtocolMessageType('FetchLaptopResposne', (_message.Message,), {
+  'DESCRIPTOR' : _FETCHLAPTOPRESPOSNE,
+  '__module__' : 'proto.laptopService_pb2'
+  # @@protoc_insertion_point(class_scope:laptop.FetchLaptopResposne)
+  })
+_sym_db.RegisterMessage(FetchLaptopResposne)
+
 Hello = _reflection.GeneratedProtocolMessageType('Hello', (_message.Message,), {
   'DESCRIPTOR' : _HELLO,
   '__module__' : 'proto.laptopService_pb2'
   # @@protoc_insertion_point(class_scope:laptop.Hello)
   })
 _sym_db.RegisterMessage(Hello)
+
+Void = _reflection.GeneratedProtocolMessageType('Void', (_message.Message,), {
+  'DESCRIPTOR' : _VOID,
+  '__module__' : 'proto.laptopService_pb2'
+  # @@protoc_insertion_point(class_scope:laptop.Void)
+  })
+_sym_db.RegisterMessage(Void)
 
 
 DESCRIPTOR._options = None
@@ -160,8 +241,8 @@ _LAPTOPSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=193,
-  serialized_end=344,
+  serialized_start=271,
+  serialized_end=488,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateLaptop',
@@ -174,9 +255,19 @@ _LAPTOPSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='FetchAllLaptops',
+    full_name='laptop.LaptopService.FetchAllLaptops',
+    index=1,
+    containing_service=None,
+    input_type=_VOID,
+    output_type=_FETCHLAPTOPRESPOSNE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='SayHello',
     full_name='laptop.LaptopService.SayHello',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_HELLO,
     output_type=_CREATELAPTOPRESPONSE,
