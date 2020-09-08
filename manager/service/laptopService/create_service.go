@@ -47,3 +47,25 @@ func (service *LaptopServer) SayHello(ctx context.Context, req *laptop.Hello) (*
 
 	return &laptop.CreateLaptopResponse{Laptop: sample}, nil
 }
+
+// FetchAllLaptops fetch all laptops form the data base.
+func (service *LaptopServer) FetchAllLaptops(void *laptop.Void, stream laptop.LaptopService_FetchAllLaptopsServer) error {
+	log.Println("hello i am called.")
+	result, err := service.Store.FetchAll(stream.Context())
+
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	fmt.Print(result)
+
+	if err := stream.Send(result); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	log.Printf("Successfully send laptop with id: %s", result.Laptop.GetId())
+
+	return nil
+}
