@@ -24,6 +24,11 @@ class LaptopServiceStub(object):
                 request_serializer=proto_dot_laptopService__pb2.Void.SerializeToString,
                 response_deserializer=proto_dot_laptopService__pb2.FetchLaptopResposne.FromString,
                 )
+        self.UploadLaptopImage = channel.stream_unary(
+                '/laptop.LaptopService/UploadLaptopImage',
+                request_serializer=proto_dot_laptopService__pb2.UploadImageRequest.SerializeToString,
+                response_deserializer=proto_dot_laptopService__pb2.UploadImageResponse.FromString,
+                )
         self.SayHello = channel.unary_unary(
                 '/laptop.LaptopService/SayHello',
                 request_serializer=proto_dot_laptopService__pb2.Hello.SerializeToString,
@@ -41,6 +46,12 @@ class LaptopServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def FetchAllLaptops(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UploadLaptopImage(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -64,6 +75,11 @@ def add_LaptopServiceServicer_to_server(servicer, server):
                     servicer.FetchAllLaptops,
                     request_deserializer=proto_dot_laptopService__pb2.Void.FromString,
                     response_serializer=proto_dot_laptopService__pb2.FetchLaptopResposne.SerializeToString,
+            ),
+            'UploadLaptopImage': grpc.stream_unary_rpc_method_handler(
+                    servicer.UploadLaptopImage,
+                    request_deserializer=proto_dot_laptopService__pb2.UploadImageRequest.FromString,
+                    response_serializer=proto_dot_laptopService__pb2.UploadImageResponse.SerializeToString,
             ),
             'SayHello': grpc.unary_unary_rpc_method_handler(
                     servicer.SayHello,
@@ -111,6 +127,23 @@ class LaptopService(object):
         return grpc.experimental.unary_stream(request, target, '/laptop.LaptopService/FetchAllLaptops',
             proto_dot_laptopService__pb2.Void.SerializeToString,
             proto_dot_laptopService__pb2.FetchLaptopResposne.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UploadLaptopImage(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(request_iterator, target, '/laptop.LaptopService/UploadLaptopImage',
+            proto_dot_laptopService__pb2.UploadImageRequest.SerializeToString,
+            proto_dot_laptopService__pb2.UploadImageResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

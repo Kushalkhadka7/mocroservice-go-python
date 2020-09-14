@@ -5,6 +5,7 @@ import (
 	"manager/database"
 	laptop "manager/pb"
 	laptopservice "manager/service/laptopService"
+	storageservice "manager/service/storageService"
 	"net"
 
 	"google.golang.org/grpc"
@@ -46,7 +47,8 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 	db := monogDB.InitializeDatabase(dbClient)
 
 	laptopStore := laptopservice.NewLaptopStore(db)
-	laptopService := laptopservice.NewLaptopService(laptopStore)
+	imageStore := storageservice.NewStorageServer("img")
+	laptopService := laptopservice.NewLaptopService(laptopStore, imageStore)
 
 	// Initializes new grpc server.
 	grpcServer := grpc.NewServer()

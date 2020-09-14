@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\013.;___laptop',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19proto/laptopService.proto\x12\x06laptop\x1a\x12proto/laptop.proto\"5\n\x13\x43reateLaptopRequest\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"6\n\x14\x43reateLaptopResponse\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"5\n\x13\x46\x65tchLaptopResposne\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"\x16\n\x05Hello\x12\r\n\x05Hello\x18\x01 \x01(\t\"\x15\n\x04Void\x12\r\n\x05Hello\x18\x01 \x01(\t2\xd9\x01\n\rLaptopService\x12K\n\x0c\x43reateLaptop\x12\x1b.laptop.CreateLaptopRequest\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x12@\n\x0f\x46\x65tchAllLaptops\x12\x0c.laptop.Void\x1a\x1b.laptop.FetchLaptopResposne\"\x00\x30\x01\x12\x39\n\x08SayHello\x12\r.laptop.Hello\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x42\rZ\x0b.;___laptopb\x06proto3'
+  serialized_pb=b'\n\x19proto/laptopService.proto\x12\x06laptop\x1a\x12proto/laptop.proto\"5\n\x13\x43reateLaptopRequest\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"6\n\x14\x43reateLaptopResponse\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"5\n\x13\x46\x65tchLaptopResposne\x12\x1e\n\x06laptop\x18\x01 \x01(\x0b\x32\x0e.laptop.Laptop\"\x16\n\x05Hello\x12\r\n\x05Hello\x18\x01 \x01(\t\"\x15\n\x04Void\x12\r\n\x05Hello\x18\x01 \x01(\t\"U\n\x12UploadImageRequest\x12!\n\x04info\x18\x01 \x01(\x0b\x32\x11.laptop.ImageInfoH\x00\x12\x14\n\nchunk_data\x18\x02 \x01(\x0cH\x00\x42\x06\n\x04\x64\x61ta\"2\n\tImageInfo\x12\x11\n\tlaptop_id\x18\x01 \x01(\t\x12\x12\n\nimage_type\x18\x02 \x01(\t\"N\n\x13UploadImageResponse\x12\x11\n\tlaptop_id\x18\x01 \x01(\t\x12\x10\n\x08image_id\x18\x02 \x01(\t\x12\x12\n\nimage_zise\x18\x03 \x01(\r2\xab\x02\n\rLaptopService\x12K\n\x0c\x43reateLaptop\x12\x1b.laptop.CreateLaptopRequest\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x12@\n\x0f\x46\x65tchAllLaptops\x12\x0c.laptop.Void\x1a\x1b.laptop.FetchLaptopResposne\"\x00\x30\x01\x12P\n\x11UploadLaptopImage\x12\x1a.laptop.UploadImageRequest\x1a\x1b.laptop.UploadImageResponse\"\x00(\x01\x12\x39\n\x08SayHello\x12\r.laptop.Hello\x1a\x1c.laptop.CreateLaptopResponse\"\x00\x42\rZ\x0b.;___laptopb\x06proto3'
   ,
   dependencies=[proto_dot_laptop__pb2.DESCRIPTOR,])
 
@@ -186,14 +186,153 @@ _VOID = _descriptor.Descriptor(
   serialized_end=268,
 )
 
+
+_UPLOADIMAGEREQUEST = _descriptor.Descriptor(
+  name='UploadImageRequest',
+  full_name='laptop.UploadImageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='info', full_name='laptop.UploadImageRequest.info', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='chunk_data', full_name='laptop.UploadImageRequest.chunk_data', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+    _descriptor.OneofDescriptor(
+      name='data', full_name='laptop.UploadImageRequest.data',
+      index=0, containing_type=None,
+      create_key=_descriptor._internal_create_key,
+    fields=[]),
+  ],
+  serialized_start=270,
+  serialized_end=355,
+)
+
+
+_IMAGEINFO = _descriptor.Descriptor(
+  name='ImageInfo',
+  full_name='laptop.ImageInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='laptop_id', full_name='laptop.ImageInfo.laptop_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='image_type', full_name='laptop.ImageInfo.image_type', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=357,
+  serialized_end=407,
+)
+
+
+_UPLOADIMAGERESPONSE = _descriptor.Descriptor(
+  name='UploadImageResponse',
+  full_name='laptop.UploadImageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='laptop_id', full_name='laptop.UploadImageResponse.laptop_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='image_id', full_name='laptop.UploadImageResponse.image_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='image_zise', full_name='laptop.UploadImageResponse.image_zise', index=2,
+      number=3, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=409,
+  serialized_end=487,
+)
+
 _CREATELAPTOPREQUEST.fields_by_name['laptop'].message_type = proto_dot_laptop__pb2._LAPTOP
 _CREATELAPTOPRESPONSE.fields_by_name['laptop'].message_type = proto_dot_laptop__pb2._LAPTOP
 _FETCHLAPTOPRESPOSNE.fields_by_name['laptop'].message_type = proto_dot_laptop__pb2._LAPTOP
+_UPLOADIMAGEREQUEST.fields_by_name['info'].message_type = _IMAGEINFO
+_UPLOADIMAGEREQUEST.oneofs_by_name['data'].fields.append(
+  _UPLOADIMAGEREQUEST.fields_by_name['info'])
+_UPLOADIMAGEREQUEST.fields_by_name['info'].containing_oneof = _UPLOADIMAGEREQUEST.oneofs_by_name['data']
+_UPLOADIMAGEREQUEST.oneofs_by_name['data'].fields.append(
+  _UPLOADIMAGEREQUEST.fields_by_name['chunk_data'])
+_UPLOADIMAGEREQUEST.fields_by_name['chunk_data'].containing_oneof = _UPLOADIMAGEREQUEST.oneofs_by_name['data']
 DESCRIPTOR.message_types_by_name['CreateLaptopRequest'] = _CREATELAPTOPREQUEST
 DESCRIPTOR.message_types_by_name['CreateLaptopResponse'] = _CREATELAPTOPRESPONSE
 DESCRIPTOR.message_types_by_name['FetchLaptopResposne'] = _FETCHLAPTOPRESPOSNE
 DESCRIPTOR.message_types_by_name['Hello'] = _HELLO
 DESCRIPTOR.message_types_by_name['Void'] = _VOID
+DESCRIPTOR.message_types_by_name['UploadImageRequest'] = _UPLOADIMAGEREQUEST
+DESCRIPTOR.message_types_by_name['ImageInfo'] = _IMAGEINFO
+DESCRIPTOR.message_types_by_name['UploadImageResponse'] = _UPLOADIMAGERESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 CreateLaptopRequest = _reflection.GeneratedProtocolMessageType('CreateLaptopRequest', (_message.Message,), {
@@ -231,6 +370,27 @@ Void = _reflection.GeneratedProtocolMessageType('Void', (_message.Message,), {
   })
 _sym_db.RegisterMessage(Void)
 
+UploadImageRequest = _reflection.GeneratedProtocolMessageType('UploadImageRequest', (_message.Message,), {
+  'DESCRIPTOR' : _UPLOADIMAGEREQUEST,
+  '__module__' : 'proto.laptopService_pb2'
+  # @@protoc_insertion_point(class_scope:laptop.UploadImageRequest)
+  })
+_sym_db.RegisterMessage(UploadImageRequest)
+
+ImageInfo = _reflection.GeneratedProtocolMessageType('ImageInfo', (_message.Message,), {
+  'DESCRIPTOR' : _IMAGEINFO,
+  '__module__' : 'proto.laptopService_pb2'
+  # @@protoc_insertion_point(class_scope:laptop.ImageInfo)
+  })
+_sym_db.RegisterMessage(ImageInfo)
+
+UploadImageResponse = _reflection.GeneratedProtocolMessageType('UploadImageResponse', (_message.Message,), {
+  'DESCRIPTOR' : _UPLOADIMAGERESPONSE,
+  '__module__' : 'proto.laptopService_pb2'
+  # @@protoc_insertion_point(class_scope:laptop.UploadImageResponse)
+  })
+_sym_db.RegisterMessage(UploadImageResponse)
+
 
 DESCRIPTOR._options = None
 
@@ -241,8 +401,8 @@ _LAPTOPSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=271,
-  serialized_end=488,
+  serialized_start=490,
+  serialized_end=789,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateLaptop',
@@ -265,9 +425,19 @@ _LAPTOPSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
+    name='UploadLaptopImage',
+    full_name='laptop.LaptopService.UploadLaptopImage',
+    index=2,
+    containing_service=None,
+    input_type=_UPLOADIMAGEREQUEST,
+    output_type=_UPLOADIMAGERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
     name='SayHello',
     full_name='laptop.LaptopService.SayHello',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_HELLO,
     output_type=_CREATELAPTOPRESPONSE,

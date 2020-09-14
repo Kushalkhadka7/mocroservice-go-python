@@ -20,6 +20,18 @@ class LaptopClient:
         for response in self.conn.FetchAllLaptops(pb.Void()):
             print(response)
 
+    def upload_image(self):
+        ImageInfo ={
+            "laptop_id":"123",
+            "image_type":"jpg",
+        }
+
+        req = pb.UploadImageRequest(
+            ImageInfo
+        )
+
+        stream = self.conn.UploadLaptopImage(req)
+
             
 def run():
     stub = LaptopClient()
