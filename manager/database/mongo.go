@@ -10,28 +10,35 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+// DatabseCreator databse interface.
+type DatabseCreator interface{
+	CreateClient() (*mongo.Client, error) 
+	InitializeDatabase(dbClient *mongo.Client) *mongo.Database
+	CloseDBConnection(dbClient *mongo.Client) error
+}
+
 // MongoDB struct the database.
 type MongoDB struct {
 	*mongo.Database
-	port       int
-	uri        string
-	dbName     string
-	dbPassword string
+	Port       int
+	URI       	string
+	DBName     string
+	DBPassword string
 }
 
 // New initializes new mongo db instance.
-func New() *MongoDB {
+func New(port int,uri,dbName,dbPassword string) *MongoDB {
 	return &MongoDB{
-		port:       27017,
-		uri:        "mongodb://localhost:27017",
-		dbName:     "mircoservices",
-		dbPassword: "Kushal123",
+		Port:      port,       
+		URI:       uri,        
+		DBName:    dbName,     
+		DBPassword:dbPassword, 
 	}
 }
 
 // CreateClient initializes new mongo db client.
 func (db *MongoDB) CreateClient() (*mongo.Client, error) {
-	clientOptins := options.Client().ApplyURI(db.uri)
+	clientOptins := options.Client().ApplyURI(db.URI)
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -48,16 +55,19 @@ func (db *MongoDB) CreateClient() (*mongo.Client, error) {
 		return nil, err
 	}
 
-	fmt.Println("\nConnected to MongoDB on port : 27017")
+	fmt.Println("\n\n\n**************************************")
+	fmt.Println("Connected to MongoDB on port : 27017")
+	fmt.Println("**************************************")
+
 	return client, nil
 }
 
-// InitializeDatabase mongo database.
+// InitializeDatabase initializes the database.
 func (db *MongoDB) InitializeDatabase(dbClient *mongo.Client) *mongo.Database {
-	return dbClient.Database("microservices")
+	return dbClient.Database(db.DBName)
 }
 
-// CloseDBConnection mongo db connection.
+// CloseDBConnection close dtabase connection.
 func (db *MongoDB) CloseDBConnection(dbClient *mongo.Client) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

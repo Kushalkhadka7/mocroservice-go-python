@@ -1,4 +1,5 @@
-package laptopservice
+package laptopstore
+
 
 import (
 	"context"
@@ -13,10 +14,10 @@ import (
 
 // LaptopStore new.
 type LaptopStore interface {
-	Save(ctx context.Context, laptop *laptop.Laptop) (*mongo.InsertOneResult, error)
+	Save(ctx context.Context, laptop *laptop.Laptop) (string, error)
 	FetchAll(ctx context.Context) (*laptop.FetchLaptopResposne, error)
 	FindLaptop(ctx context.Context, laptopID string) (string, error)
-	UpdateLaptop(laptopID string, imageID string) error
+	UpdateLaptop(ctx context.Context, laptopID string, imageID string) error
 }
 
 // CreateLaptopStore new.
@@ -25,32 +26,28 @@ type CreateLaptopStore struct {
 }
 
 // NewLaptopStore laptop store.
-func NewLaptopStore(db *mongo.Database) *CreateLaptopStore {
+func NewLaptopStore(db *mongo.Database) LaptopStore {
 	return &CreateLaptopStore{db}
 }
 
 // Save new laptop.
-func (store *CreateLaptopStore) Save(ctx context.Context, req *laptop.Laptop) (*mongo.InsertOneResult, error) {
+func (store *CreateLaptopStore) Save(ctx context.Context, req *laptop.Laptop) (string, error) {
 	newData, err := bson.Marshal(req)
 
 	collection := store.Collection("laptop")
 
 	res, err := collection.InsertOne(context.Background(), newData)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	return res, nil
+	return res.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
 // FetchAll fetch all laptops from db.
 func (store *CreateLaptopStore) FetchAll(ctx context.Context) (*laptop.FetchLaptopResposne, error) {
-	if ctx.Err() == context.Canceled || ctx.Err() == context.DeadlineExceeded {
-		log.Printf("Error: %s", ctx.Err())
-		return nil, ctx.Err()
-	}
-
 	collection := store.Collection("laptop")
+	
 	cursor, err := collection.Find(ctx, bson.M{})
 	if err != nil {
 		log.Fatal(err)
