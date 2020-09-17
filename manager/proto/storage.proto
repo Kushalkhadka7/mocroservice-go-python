@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package laptop;
 
-import "memory.proto";
+import "proto/memory.proto";
 
 option go_package = ".;___laptop";
 

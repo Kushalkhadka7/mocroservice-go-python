@@ -5,6 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"manager/database"
 	laptop "manager/pb"
+	imageservice "manager/service/image"
 	laptopservice "manager/service/laptop"
 	store "manager/store"
 	"net"
@@ -26,8 +27,8 @@ type Server struct {
 // Creator interface creates and initializes http and grpc server.
 type Creator interface {
 	StartHTTPServer() (net.Listener, error)
-	StartGrpcServer(listener net.Listener) error
 	DBConnection() (*mongo.Database, error)
+	StartGrpcServer(listener net.Listener) error
 }
 
 // New creates a new server with given port.
@@ -54,9 +55,14 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 		return err
 	}
 
+	imageStore := store.NewDiskImageStore("img")
+	imageService := imageservice.NewImageService(imageStore)
+
 	laptopStore := store.NewLaptopStore(db)
 	laptopService := laptopservice.New(laptopStore)
-	laptopServer := NewLaptopServer(laptopService, nil)
+
+	// Initializes grpc server.
+	laptopServer := NewLaptopServer(laptopService, imageService)
 
 	// Initializes new grpc server.
 	grpcServer := grpc.NewServer()

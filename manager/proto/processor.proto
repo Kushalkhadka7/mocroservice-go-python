@@ -4,7 +4,7 @@ package laptop;
 
 option go_package = ".;___laptop";
 
-import "memory.proto";
+import "proto/memory.proto";
 
 message CPU{
     string brand = 1;

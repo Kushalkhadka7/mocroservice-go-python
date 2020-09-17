@@ -25,7 +25,6 @@ func getBoolean() bool {
 	return rand.Intn(2) == 1
 }
 
-
 func getRandomCPUBrand() string {
 	brand := []string{"HP", "LENOVO", "DELL", "APPLE", "ACER"}
 

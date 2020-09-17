@@ -4,7 +4,7 @@ package laptop;
 
 option go_package = ".;___laptop";
 
-import "laptop.proto";
+import "proto/laptop.proto";
 
 message CreateLaptopRequest{
     Laptop laptop = 1;
@@ -38,7 +38,7 @@ message ImageInfo{
 
 message UploadImageResponse{
     string laptop_id = 1;
-    string image_id = 2;
+    string image_id = 2; 
     uint32 image_size = 3;
 }
 

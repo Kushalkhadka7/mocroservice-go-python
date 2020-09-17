@@ -32,6 +32,12 @@ func TestClientCreateLaptop(t *testing.T) {
 
 }
 
+
+func testClientStreamingRPC(){
+	
+}
+
+// starts test grpc client for testing grpc server.
 func startGrpcClient(t *testing.T, serverAddr string) laptop.LaptopServiceClient {
 	conn, err := grpc.Dial(serverAddr, grpc.WithInsecure())
 	require.NoError(t, err)
@@ -39,6 +45,7 @@ func startGrpcClient(t *testing.T, serverAddr string) laptop.LaptopServiceClient
 	return laptop.NewLaptopServiceClient(conn)
 }
 
+// startTestLaptopServer starts test server.
 func startTestLaptopServer(t *testing.T) (*server.LaptopServer, string) {
 	db, err := initializeDatabase(t)
 	if err != nil {
@@ -61,6 +68,7 @@ func startTestLaptopServer(t *testing.T) (*server.LaptopServer, string) {
 	return laptopServer, listener.Addr().String()
 }
 
+// Iniitlaizes test database connection.
 func initializeDatabase(t *testing.T) (*mongo.Database, error) {
 	monogDB := database.New(dbPort, dbURI, dbName, dbPassword)
 	dbClient, err := monogDB.CreateClient()

@@ -1,11 +1,11 @@
 package laptopstore
 
-
 import (
 	"context"
 	"fmt"
 	"log"
 	laptop "manager/pb"
+	"manager/util"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -14,10 +14,10 @@ import (
 
 // LaptopStore new.
 type LaptopStore interface {
+	FetchAll(ctx context.Context) ([]*laptop.Laptop, error)
 	Save(ctx context.Context, laptop *laptop.Laptop) (string, error)
-	FetchAll(ctx context.Context) (*laptop.FetchLaptopResposne, error)
-	FindLaptop(ctx context.Context, laptopID string) (string, error)
-	UpdateLaptop(ctx context.Context, laptopID string, imageID string) error
+	FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error)
+	UpdateLaptop(ctx context.Context, laptopID string, imageID string) (*mongo.UpdateResult,error)
 }
 
 // CreateLaptopStore new.
@@ -45,75 +45,76 @@ func (store *CreateLaptopStore) Save(ctx context.Context, req *laptop.Laptop) (s
 }
 
 // FetchAll fetch all laptops from db.
-func (store *CreateLaptopStore) FetchAll(ctx context.Context) (*laptop.FetchLaptopResposne, error) {
+func (store *CreateLaptopStore) FetchAll(ctx context.Context) ([]*laptop.Laptop, error) {
 	collection := store.Collection("laptop")
-	
+	var result []*laptop.Laptop
+
 	cursor, err := collection.Find(ctx, bson.M{})
 	if err != nil {
-		log.Fatal(err)
+
 	}
 	defer cursor.Close(ctx)
 
 	for cursor.Next(ctx) {
-		var result = &laptop.FetchLaptopResposne{}
-		if err = cursor.Decode(&result.Laptop); err != nil {
+		var resposne *laptop.Laptop
+		if err = cursor.Decode(&resposne); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(result.Laptop)
 
-		return result, nil
+		fmt.Println(resposne)
+
+		result = append(result, resposne)
+	}
+	if err := cursor.Err(); err != nil {
+		return nil, err
 	}
 
-	return nil, nil
+	return result, nil
 }
 
 // FindLaptop find laptop with given id
-func (store *CreateLaptopStore) FindLaptop(ctx context.Context, laptopID string) (string, error) {
-	ID := "5f57b3559c4bf7fc1dd42299"
-
-	oid, err := primitive.ObjectIDFromHex(ID)
-	if err != nil {
-		return "", err
-	}
-
+func (store *CreateLaptopStore) FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error) {
 	collection := store.Collection("laptop")
+
+	oid, err := util.GenerateOID(laptopID)
+	if err != nil {
+		return nil, err
+	}
 
 	result := collection.FindOne(ctx, bson.M{"_id": oid})
 	if result == nil {
-		return "", nil
+		return nil, fmt.Errorf("Unable to find laptop with id: %s", laptopID)
 	}
 
-	var data primitive.M
-	if err := result.Decode(&data); err != nil {
+	var response *laptop.Laptop
+	if err := result.Decode(&response); err != nil {
 		fmt.Println(err)
-		return "", err
+		return nil, err
 	}
 
-	return ID, nil
+	return response, nil
 }
 
 // UpdateLaptop updates the laptop image.
-func (store *CreateLaptopStore) UpdateLaptop(ctx context.Context, laptopID string, imageID string) error {
+func (store *CreateLaptopStore) UpdateLaptop(ctx context.Context, laptopID string, imageID string) (*mongo.UpdateResult, error) {
 	collection := store.Collection("laptop")
 
-	oid, err := primitive.ObjectIDFromHex(laptopID)
+	oid, err := util.GenerateOID(laptopID)
 	if err != nil {
-		return err
+		return nil,err
 	}
 
-	filter := bson.M{
+	updateFilter := bson.M{
 		"_id": bson.M{
 			"$eq": oid, // check if bool field has value of 'false'
 		},
 	}
-	updateData := bson.M{"$set": bson.M{"imageId": imageID}}
+	toBeUpdatedPayload := bson.M{"$set": bson.M{"imageId": imageID}}
 
-	result, err := collection.UpdateOne(ctx, filter, updateData)
+	result, err := collection.UpdateOne(ctx, updateFilter, toBeUpdatedPayload)
 	if err != nil {
-		return err
+		return nil,err
 	}
 
-	fmt.Println(result)
-
-	return nil
+	return result,nil
 }

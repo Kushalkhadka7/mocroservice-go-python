@@ -69,7 +69,7 @@ func NewScreen() *laptop.Screen {
 // NewLaptop generates sampled data for laptop.
 func NewLaptop() *laptop.Laptop {
 	return &laptop.Laptop{
-		Id:    "",
+		XId:   "",
 		Brand: getRandomCPUBrand(),
 		Name:  getRandomString(),
 		Cpu:   NewCPU(),
@@ -85,10 +85,8 @@ func NewLaptop() *laptop.Laptop {
 			NewStorage(),
 			NewStorage(),
 		},
-		Keyboard: NewKeyboard(),
-		Weight: &laptop.Laptop_WeightKg{
-			WeightKg: getRandomFLoat(),
-		},
+		Keyboard:    NewKeyboard(),
+		Weight:      getRandomFLoat(),
 		PriceUsd:    getRandomFLoat(),
 		ReleaseYear: getRandomYear(),
 		UpdatedAt:   ptypes.TimestampNow(),
