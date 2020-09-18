@@ -55,11 +55,13 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 		return err
 	}
 
-	imageStore := store.NewDiskImageStore("img")
-	imageService := imageservice.NewImageService(imageStore)
-
 	laptopStore := store.NewLaptopStore(db)
 	laptopService := laptopservice.New(laptopStore)
+
+
+	imageStore := store.NewDiskImageStore("../img")
+	imageService := imageservice.NewImageService(imageStore,laptopService)
+
 
 	// Initializes grpc server.
 	laptopServer := NewLaptopServer(laptopService, imageService)

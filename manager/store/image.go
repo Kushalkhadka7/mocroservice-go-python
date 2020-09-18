@@ -49,8 +49,7 @@ func (store *DiskImageStore) Save(laptopID string, imageType string, imageData b
 	if err != nil {
 		return nil, err
 	}
-
-
+	
 	return &ImageInfo{
 		LaptopID: laptopID,
 		Type:     imageType,

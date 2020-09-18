@@ -16,6 +16,10 @@ func (service MockLaptopService) SaveLaptop(ctx context.Context, laptop *laptop.
 	return "Hello", nil
 }
 
+func (service MockLaptopService) SaveLaptop(ctx context.Context, laptop *laptop.Laptop) (string, error) {
+	return "Hello", nil
+}
+
 var ctx = context.Background()
 var laptopServer = server.NewLaptopServer(MockLaptopService{}, nil)
 
@@ -52,7 +56,7 @@ func TestLaptopServer(t *testing.T) {
 
 			require.NoError(t, err)
 			require.NotNil(t, res)
-			require.NotEmpty(t, res.Laptop.Id)
+			require.NotEmpty(t, res.Laptop.Brand)
 		})
 	}
 
@@ -93,7 +97,7 @@ func TestCreateLapotp(t *testing.T) {
 			require.NotNil(t, res)
 			require.NotEmpty(t, res)
 			require.NotEmpty(t, res.Laptop)
-			require.NotEmpty(t, res.Laptop.Id)
+			require.NotEmpty(t, res.Laptop.Brand)
 		})
 	}
 }

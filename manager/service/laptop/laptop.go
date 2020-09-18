@@ -57,9 +57,7 @@ func (service *CreateLaptopService) FetchAllLaptops(ctx context.Context) ([]*lap
 
 // FindLaptop find laptop with given id
 func (service *CreateLaptopService) FindLaptop(ctx context.Context,laptopID string) (*laptop.Laptop, error) {
-	ID := "5f57b3559c4bf7fc1dd42299"
-
-	result,err:= service.LaptopStore.FindLaptop(ctx,ID)
+	result,err:= service.LaptopStore.FindLaptop(ctx,laptopID)
 	if err !=nil {
 		return nil,err
 	}
@@ -69,9 +67,8 @@ func (service *CreateLaptopService) FindLaptop(ctx context.Context,laptopID stri
 
 // UpdateLaptop updates laptop in store.
 func (service *CreateLaptopService) UpdateLaptop(ctx context.Context, laptopID string, imageID string) error{
-	ID := "5f57b3559c4bf7fc1dd42299"
 
-	result,err:= service.LaptopStore.UpdateLaptop(ctx,ID,ID)
+	result,err:= service.LaptopStore.UpdateLaptop(ctx,laptopID,imageID)
 	fmt.Println(result)
 	if err !=nil {
 		return err

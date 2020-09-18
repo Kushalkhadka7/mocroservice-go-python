@@ -20,13 +20,13 @@ type CreateImageStorage interface {
 
 // ImageService initializes new image service.
 type ImageService struct {
-	laptopservice.LaptopService
+	LaptopService laptopservice.LaptopService
 	ImageStore laptopstore.ImageStore
 }
 
 // NewImageService creates new image service.
-func NewImageService(store laptopstore.ImageStore) CreateImageStorage {
-	return &ImageService{ImageStore: store}
+func NewImageService(store laptopstore.ImageStore,laptopService laptopservice.LaptopService) CreateImageStorage {
+	return &ImageService{ImageStore: store,LaptopService:laptopService}
 }
 
 // Save image to imaage store.
@@ -42,18 +42,20 @@ func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageS
 	laptopID := req.GetInfo().GetLaptopId()
 	imageType := req.GetInfo().GetImageType()
 	log.Printf("Request received with image type : %s and laptop id :%s", imageType, laptopID)
-
-	result, err := service.LaptopService.FindLaptop(context.Background(), "hello")
-	fmt.Println(result)
+	
+	result, err := service.LaptopService.FindLaptop(context.Background(),laptopID)
 	if err != nil {
+		fmt.Print(err)
 		return nil, err
 	}
+	fmt.Println(result)
+	
 
 	imageData := bytes.Buffer{}
 	imageSize := 0
 
 	for {
-		fmt.Println("Starting to receive chunks of image data")
+		fmt.Printf("Starting to receive chunks of image data: %v \n",imageSize)
 
 		req, err := stream.Recv()
 		if err == io.EOF {

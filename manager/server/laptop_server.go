@@ -39,7 +39,7 @@ func (service *LaptopServer) CreateLaptop(ctx context.Context, req *laptop.Creat
 
 // SayHello hello func.
 func (service *LaptopServer) SayHello(ctx context.Context, req *laptop.Hello) (*laptop.CreateLaptopResponse, error) {
-	sample := sample.NewLaptop()
+		sample := sample.NewLaptop()
 
 	result, err := service.LaptopService.SaveLaptop(context.Background(), sample)
 	if err != nil {
@@ -77,7 +77,6 @@ func (service *LaptopServer) FetchAllLaptops(void *laptop.Void, stream laptop.La
 	return nil
 }
 
-//
 // UploadLaptopImage upload image to server.
 func (service *LaptopServer) UploadLaptopImage(stream laptop.LaptopService_UploadLaptopImageServer) error {
 	
@@ -86,7 +85,7 @@ func (service *LaptopServer) UploadLaptopImage(stream laptop.LaptopService_Uploa
 		return err
 	}
 	
-	err = stream.SendAndClose(res)
+	err = stream.SendAndClose(result)
 	if err != nil {
 		return err
 	}

@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	laptop "manager/pb"
-	"manager/util"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -76,12 +75,14 @@ func (store *CreateLaptopStore) FetchAll(ctx context.Context) ([]*laptop.Laptop,
 func (store *CreateLaptopStore) FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error) {
 	collection := store.Collection("laptop")
 
-	oid, err := util.GenerateOID(laptopID)
+	oid, err := primitive.ObjectIDFromHex(laptopID)
 	if err != nil {
 		return nil, err
 	}
 
+	fmt.Println("hello world")
 	result := collection.FindOne(ctx, bson.M{"_id": oid})
+	fmt.Println(result)
 	if result == nil {
 		return nil, fmt.Errorf("Unable to find laptop with id: %s", laptopID)
 	}
@@ -99,7 +100,7 @@ func (store *CreateLaptopStore) FindLaptop(ctx context.Context, laptopID string)
 func (store *CreateLaptopStore) UpdateLaptop(ctx context.Context, laptopID string, imageID string) (*mongo.UpdateResult, error) {
 	collection := store.Collection("laptop")
 
-	oid, err := util.GenerateOID(laptopID)
+	oid, err := primitive.ObjectIDFromHex(laptopID)
 	if err != nil {
 		return nil,err
 	}
