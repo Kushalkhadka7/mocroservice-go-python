@@ -3,12 +3,14 @@ package server
 import (
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
 	"time"
 
 	laptop "manager/pb"
 	"manager/sample"
 	imageservice "manager/service/image"
 	laptopservice "manager/service/laptop"
+	"manager/util"
 )
 
 // LaptopServer struct.
@@ -24,22 +26,20 @@ func NewLaptopServer(laptopStore laptopservice.LaptopService, imageStore imagese
 
 // CreateLaptop creates new laptop.
 func (service *LaptopServer) CreateLaptop(ctx context.Context, req *laptop.CreateLaptopRequest) (*laptop.CreateLaptopResponse, error) {
-	sample := sample.NewLaptop()
 
-	result, err := service.LaptopService.SaveLaptop(context.Background(), sample)
+	result, err := service.LaptopService.SaveLaptop(context.Background(), req.Laptop)
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		return nil, err
 	}
 
-	sample.XId = result
+	req.Laptop.XId = result
 
-	return &laptop.CreateLaptopResponse{Laptop: sample}, nil
+	return &laptop.CreateLaptopResponse{Laptop: req.Laptop}, nil
 }
 
 // SayHello hello func.
 func (service *LaptopServer) SayHello(ctx context.Context, req *laptop.Hello) (*laptop.CreateLaptopResponse, error) {
-		sample := sample.NewLaptop()
+	sample := sample.NewLaptop()
 
 	result, err := service.LaptopService.SaveLaptop(context.Background(), sample)
 	if err != nil {
@@ -79,15 +79,15 @@ func (service *LaptopServer) FetchAllLaptops(void *laptop.Void, stream laptop.La
 
 // UploadLaptopImage upload image to server.
 func (service *LaptopServer) UploadLaptopImage(stream laptop.LaptopService_UploadLaptopImageServer) error {
-	
+
 	result, err := service.ImageService.Save(stream)
-	if err !=nil {
-		return err
-	}
-	
-	err = stream.SendAndClose(result)
 	if err != nil {
 		return err
+	}
+
+	err = stream.SendAndClose(result)
+	if err != nil {
+		return util.Error(codes.Unknown, "Unable to send data", err)
 	}
 
 	return nil

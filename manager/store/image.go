@@ -3,6 +3,8 @@ package laptopstore
 import (
 	"bytes"
 	"fmt"
+	"google.golang.org/grpc/codes"
+	"manager/util"
 	"os"
 
 	guuid "github.com/google/uuid"
@@ -24,7 +26,7 @@ type ImageInfo struct {
 	LaptopID string
 	Type     string
 	Path     string
-	ImageID string
+	ImageID  string
 }
 
 // NewDiskImageStore new server.
@@ -42,18 +44,18 @@ func (store *DiskImageStore) Save(laptopID string, imageType string, imageData b
 	imagePath := fmt.Sprintf("%s/%s.%s", store.imageFolder, imageID, imageType)
 	imageFile, err := os.Create(imagePath)
 	if err != nil {
-		return nil, err
+		return nil, util.Error(codes.Unknown, "Unable to create file", err)
 	}
 
 	_, err = imageData.WriteTo(imageFile)
 	if err != nil {
-		return nil, err
+		return nil, util.Error(codes.Unknown, "Unable to write data to file", err)
 	}
-	
+
 	return &ImageInfo{
 		LaptopID: laptopID,
 		Type:     imageType,
 		Path:     imagePath,
-		ImageID: imageID.String(),
+		ImageID:  imageID.String(),
 	}, nil
 }

@@ -1,13 +1,11 @@
 package laptopservice
 
 import (
-	"fmt"
 	"context"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"log"
 	laptop "manager/pb"
 	"manager/store"
+	"manager/util"
 )
 
 // LaptopService interface to implement laptop service.
@@ -33,44 +31,44 @@ func (service *CreateLaptopService) SaveLaptop(ctx context.Context, laptop *lapt
 
 	result, err := service.LaptopStore.Save(ctx, laptop)
 	if err != nil {
-		return "", status.Errorf(codes.Internal, "Cannot save laptop to db. %v", err)
+		return "", err
 	}
 
-	return result,nil
+	return result, nil
 }
 
 // FetchAllLaptops laptops in db.
 func (service *CreateLaptopService) FetchAllLaptops(ctx context.Context) ([]*laptop.Laptop, error) {
 	// Checks context error.
-	if ctx.Err() == context.Canceled || ctx.Err() == context.DeadlineExceeded {
-		log.Printf("Error: %s", ctx.Err())
-		return nil, ctx.Err()
+	if ctx.Err() == context.Canceled {
+		return nil, util.Error(codes.DeadlineExceeded, "Context cancelled", ctx.Err())
+	}
+	if ctx.Err() == context.DeadlineExceeded {
+		return nil, util.Error(codes.DeadlineExceeded, "Context deadline exceedes", ctx.Err())
 	}
 
 	result, err := service.LaptopStore.FetchAll(ctx)
 	if err != nil {
-		return nil, status.Errorf(codes.Internal, "Unable to fetch laptps %v", err)
+		return nil, err
 	}
-	
+
 	return result, nil
 }
 
 // FindLaptop find laptop with given id
-func (service *CreateLaptopService) FindLaptop(ctx context.Context,laptopID string) (*laptop.Laptop, error) {
-	result,err:= service.LaptopStore.FindLaptop(ctx,laptopID)
-	if err !=nil {
-		return nil,err
+func (service *CreateLaptopService) FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error) {
+	result, err := service.LaptopStore.FindLaptop(ctx, laptopID)
+	if err != nil {
+		return nil, err
 	}
 
-	return result,nil
+	return result, nil
 }
 
 // UpdateLaptop updates laptop in store.
-func (service *CreateLaptopService) UpdateLaptop(ctx context.Context, laptopID string, imageID string) error{
-
-	result,err:= service.LaptopStore.UpdateLaptop(ctx,laptopID,imageID)
-	fmt.Println(result)
-	if err !=nil {
+func (service *CreateLaptopService) UpdateLaptop(ctx context.Context, laptopID string, imageID string) error {
+	_, err := service.LaptopStore.UpdateLaptop(ctx, laptopID, imageID)
+	if err != nil {
 		return err
 	}
 

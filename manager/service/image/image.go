@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"google.golang.org/grpc/codes"
 	"io"
 	"log"
 	laptop "manager/pb"
 	laptopservice "manager/service/laptop"
 	laptopstore "manager/store"
+	"manager/util"
 )
 
 const maxImageSize = 1 << 20
@@ -21,12 +23,12 @@ type CreateImageStorage interface {
 // ImageService initializes new image service.
 type ImageService struct {
 	LaptopService laptopservice.LaptopService
-	ImageStore laptopstore.ImageStore
+	ImageStore    laptopstore.ImageStore
 }
 
 // NewImageService creates new image service.
-func NewImageService(store laptopstore.ImageStore,laptopService laptopservice.LaptopService) CreateImageStorage {
-	return &ImageService{ImageStore: store,LaptopService:laptopService}
+func NewImageService(store laptopstore.ImageStore, laptopService laptopservice.LaptopService) CreateImageStorage {
+	return &ImageService{ImageStore: store, LaptopService: laptopService}
 }
 
 // Save image to imaage store.
@@ -35,27 +37,25 @@ func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageS
 
 	req, err := stream.Recv()
 	if err != nil {
-		fmt.Println(err)
-		return nil, err
+		return nil, util.Error(codes.Internal, "Unable to receive data", err)
 	}
 
 	laptopID := req.GetInfo().GetLaptopId()
 	imageType := req.GetInfo().GetImageType()
 	log.Printf("Request received with image type : %s and laptop id :%s", imageType, laptopID)
-	
-	result, err := service.LaptopService.FindLaptop(context.Background(),laptopID)
+
+	result, err := service.LaptopService.FindLaptop(context.Background(), laptopID)
 	if err != nil {
-		fmt.Print(err)
+
 		return nil, err
 	}
 	fmt.Println(result)
-	
 
 	imageData := bytes.Buffer{}
 	imageSize := 0
 
 	for {
-		fmt.Printf("Starting to receive chunks of image data: %v \n",imageSize)
+		fmt.Printf("Starting to receive chunks of image data: %v \n", imageSize)
 
 		req, err := stream.Recv()
 		if err == io.EOF {
@@ -63,7 +63,7 @@ func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageS
 			break
 		}
 		if err != nil {
-			return nil, err
+			return nil, util.Error(codes.Internal, "Unable to receive data", err)
 		}
 
 		chunk := req.GetChunkData()
@@ -74,7 +74,7 @@ func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageS
 
 		_, err = imageData.Write(chunk)
 		if err != nil {
-			return nil, err
+			return nil, util.Error(codes.Internal, "Unable write data to file", err)
 		}
 	}
 
