@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"context"
+	"manager/util"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/codes"
 	laptop "manager/pb"
@@ -12,12 +13,23 @@ import (
 
 type MockLaptopService struct{}
 
+// Mock save laptop funciton.
 func (service MockLaptopService) SaveLaptop(ctx context.Context, laptop *laptop.Laptop) (string, error) {
-	return "Hello", nil
-}
+	oid,err:= util.GenerateOID("new Laptop")
+	if err!=nil {
+		return"",err
+	}
 
-func (service MockLaptopService) SaveLaptop(ctx context.Context, laptop *laptop.Laptop) (string, error) {
-	return "Hello", nil
+	return oid,nil
+}
+func(service *MockLaptopService)FetchAllLaptops(ctx context.Context) ([]*laptop.Laptop, error){
+	return nil,nil
+}
+func(service *MockLaptopService)FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error){
+	return nil,nil
+}
+func(service *MockLaptopService)UpdateLaptop(ctx context.Context, laptopID string, imageID string) error{
+	return nil
 }
 
 var ctx = context.Background()
@@ -71,7 +83,7 @@ func TestCreateLapotp(t *testing.T) {
 		code codes.Code
 	}{
 		{
-			name: "Success with laptop id.",
+			name: "Success",
 			req:  &laptop.CreateLaptopRequest{Laptop: sample.NewLaptop()},
 			code: codes.OK,
 		},
@@ -89,10 +101,6 @@ func TestCreateLapotp(t *testing.T) {
 			t.Parallel()
 
 			res, err := laptopServer.CreateLaptop(ctx, tc.req)
-			if err != nil {
-				require.Error(t, err)
-				t.Fatalf("Error, %v", err)
-			}
 			require.NoError(t, err)
 			require.NotNil(t, res)
 			require.NotEmpty(t, res)
@@ -101,3 +109,4 @@ func TestCreateLapotp(t *testing.T) {
 		})
 	}
 }
+

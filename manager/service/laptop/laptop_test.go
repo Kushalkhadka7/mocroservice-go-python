@@ -15,9 +15,9 @@ var ctx = context.Background()
 
 type MockLaptopStore struct{}
 
-// func (store *MockLaptopStore) FetchAll(ctx context.Context) ([]*laptop.Laptop, error) {
-// 	return nil,nil
-// }
+func (store *MockLaptopStore) FetchAll(ctx context.Context) ([]*laptop.Laptop, error) {
+	return nil,nil
+}
 
 func (store *MockLaptopStore) Save(ctx context.Context, laptop *laptop.Laptop) (string, error) {
 	return "", nil
@@ -30,8 +30,6 @@ func (store *MockLaptopStore) FindLaptop(ctx context.Context, laptopID string) (
 func (store *MockLaptopStore) UpdateLaptop(ctx context.Context, laptopID string, imageID string) (*mongo.UpdateResult, error) {
 	return nil, nil
 }
-
-var ctx = context.Background()
 
 func TestSaveLaptop(t *testing.T) {
 	t.Parallel()

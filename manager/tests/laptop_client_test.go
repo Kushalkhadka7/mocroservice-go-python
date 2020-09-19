@@ -19,30 +19,24 @@ import (
 )
 
 var dbPort = 27017
-var dbURI = "mongodb://localhost:27017"
 var dbName = "mircoservices"
 var dbPassword = "Kushal123"
+var dbURI = "mongodb://localhost:27017"
 
 func TestClientCreateLaptop(t *testing.T) {
 	// _, serverAddr := startTestLaptopServer(t)
 	laptopClient := startGrpcClient(t, ":8080")
 
-	// test sayHello function.
-	// req := &laptop.Hello{Hello: "kushal"}
-	// _, err := laptopClient.SayHello(context.Background(), req)
-	// require.NoError(t, err)
-
 	// Test createLaptop function.
-	// createLaptop(t, laptopClient)
+	createdLaptop := createLaptop(t, laptopClient)
 
 	// Test fetch all laptops function.
-	// fetchAllLaptop(t, laptopClient)
+	fetchAllLaptop(t, laptopClient)
 
-	testUploadImage(t, laptopClient)
+	testUploadImage(t, laptopClient, createdLaptop.Laptop)
 }
 
-func testUploadImage(t *testing.T, laptopClient laptop.LaptopServiceClient) {
-	ID := "5f64e6ca8d9cf8838d08d8ef"
+func testUploadImage(t *testing.T, laptopClient laptop.LaptopServiceClient, newLaptop *laptop.Laptop) {
 	imagePath := "../tmp/laptop.jpg"
 
 	imageFile, err := os.Open(imagePath)
@@ -59,7 +53,7 @@ func testUploadImage(t *testing.T, laptopClient laptop.LaptopServiceClient) {
 	req := &laptop.UploadImageRequest{
 		Data: &laptop.UploadImageRequest_Info{
 			Info: &laptop.ImageInfo{
-				LaptopId:  ID,
+				LaptopId:  newLaptop.XId,
 				ImageType: "jpg",
 			},
 		},
@@ -111,14 +105,15 @@ func fetchAllLaptop(t *testing.T, laptopClient laptop.LaptopServiceClient) {
 	require.NotNil(t, res)
 }
 
-func createLaptop(t *testing.T, laptopClient laptop.LaptopServiceClient) {
+func createLaptop(t *testing.T, laptopClient laptop.LaptopServiceClient) *laptop.CreateLaptopResponse {
 	sampleLaptop := sample.NewLaptop()
 	req := &laptop.CreateLaptopRequest{Laptop: sampleLaptop}
 
 	res, err := laptopClient.CreateLaptop(context.Background(), req)
 	require.NoError(t, err)
 	require.NotNil(t, res)
-	// require.Equal(t, req, res)
+
+	return res
 }
 
 // starts test grpc client for testing grpc server.

@@ -69,7 +69,7 @@ func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageS
 		chunk := req.GetChunkData()
 		imageSize += len(chunk)
 		if imageSize > maxImageSize {
-			return nil, fmt.Errorf("Image size exceeds. %d", maxImageSize)
+			return nil, fmt.Errorf("Image size exceeddatas. %d", maxImageSize)
 		}
 
 		_, err = imageData.Write(chunk)
