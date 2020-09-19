@@ -3,8 +3,10 @@ package server
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc/codes"
+	"log"
 	"time"
+
+	"google.golang.org/grpc/codes"
 
 	laptop "manager/pb"
 	"manager/sample"
@@ -26,13 +28,15 @@ func NewLaptopServer(laptopStore laptopservice.LaptopService, imageStore imagese
 
 // CreateLaptop creates new laptop.
 func (service *LaptopServer) CreateLaptop(ctx context.Context, req *laptop.CreateLaptopRequest) (*laptop.CreateLaptopResponse, error) {
-
+	log.Println("Request received to create new laptop.")
 	result, err := service.LaptopService.SaveLaptop(context.Background(), req.Laptop)
 	if err != nil {
 		return nil, err
 	}
 
 	req.Laptop.XId = result
+
+	log.Printf("Successfully created new laptop with id: %v", result)
 
 	return &laptop.CreateLaptopResponse{Laptop: req.Laptop}, nil
 }

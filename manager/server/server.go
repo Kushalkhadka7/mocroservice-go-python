@@ -1,14 +1,16 @@
 package server
 
 import (
+	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/mongo"
 	"manager/database"
 	laptop "manager/pb"
 	imageservice "manager/service/image"
 	laptopservice "manager/service/laptop"
 	store "manager/store"
 	"net"
+
+	"go.mongodb.org/mongo-driver/mongo"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -48,6 +50,17 @@ func (server *Server) StartHTTPServer() (net.Listener, error) {
 	return listener, nil
 }
 
+func unaryServerInterceptor(
+	ctx context.Context,
+	req interface{},
+	info *grpc.UnaryServerInfo,
+	handler grpc.UnaryHandler,
+) (resp interface{}, err error) {
+	fmt.Println("hello world i am called again.")
+
+	return handler(ctx, req)
+}
+
 // StartGrpcServer starts a new grpc server.
 func (server *Server) StartGrpcServer(listener net.Listener) error {
 	db, err := server.DBConnection()
@@ -65,7 +78,9 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 	laptopServer := NewLaptopServer(laptopService, imageService)
 
 	// Initializes new grpc server.
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(unaryServerInterceptor),
+	)
 	laptop.RegisterLaptopServiceServer(grpcServer, laptopServer)
 	reflection.Register(grpcServer)
 
