@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package laptop;
+package pb;
+
+option go_package = ".;___pb";
 
 import "proto/memory.proto";
-
-option go_package = ".;___laptop";
 
 message Storage{
     enum Driver{

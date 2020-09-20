@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package laptop;
+package pb;
 
-option go_package = ".;___laptop";
+option go_package = ".;___pb";
 
 message Memory{
     enum Unit{

@@ -15,7 +15,7 @@ import (
 
 // UserService interface to implement.
 type UserService interface {
-	SaveUser(ctx context.Context, req *pb.User) (*model.User, error)
+	SaveUser(ctx context.Context, req *pb.User) (string, error)
 	VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*UserInfo, error)
 }
 
@@ -34,12 +34,12 @@ func NewUserService(store store.UserStore, jwtManger *JWTManager) UserService {
 }
 
 // SaveUser create and save new user.
-func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (*model.User, error) {
+func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (string, error) {
 	hashedPasswored, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println("i am called2")
 		fmt.Println(err)
-		return nil, status.Errorf(codes.Internal, "Unable to bcrypt password %v", err)
+		return "", status.Errorf(codes.Internal, "Unable to bcrypt password %v", err)
 	}
 
 	user := model.NewUser(req.GetName(), string(hashedPasswored), req.GetRole())
@@ -48,27 +48,10 @@ func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (*
 	token, err := service.JWTManager.GenerateToken(user)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return "", err
 	}
 
-	fmt.Println(token)
-
-	userInfo, err := service.JWTManager.VerifyToken(token)
-	if err != nil {
-		fmt.Println(err)
-		return nil, err
-	}
-
-	fmt.Println(userInfo)
-
-	res, err := service.UserStore.Save(user)
-	if err != nil {
-		fmt.Println("i am called3")
-		fmt.Println(err)
-		return nil, err
-	}
-
-	return res, nil
+	return token, nil
 }
 
 func (service *CreateUserService) VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*UserInfo, error) {

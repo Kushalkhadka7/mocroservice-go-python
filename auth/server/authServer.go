@@ -31,11 +31,12 @@ func (server *AuthServer) CreateUser(ctx context.Context, req *pb.CreateUserRequ
 	fmt.Println(res)
 
 	return &pb.CreateUserResponse{
-		Success: "Success",
+		AccessToken: res,
 	}, nil
 }
 
 func (server *AuthServer) VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*pb.VerifyUserTokenResponse, error) {
+	fmt.Println(req)
 	res, err := server.UserService.VerifyUser(ctx, req)
 	if err != nil {
 		fmt.Println("i am called1")

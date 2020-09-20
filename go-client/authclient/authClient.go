@@ -39,5 +39,5 @@ func (client *AuthClient) Login() (string, error) {
 		return "", err
 	}
 
-	return res.GetSuccess(), nil
+	return res.AccessToken, nil
 }

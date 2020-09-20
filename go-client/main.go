@@ -30,7 +30,6 @@ func main() {
 	laptopClient := laptopclient.NewLapotpClient(serverConn)
 
 	laptopClient.CreateNewLaptop()
-
 }
 
 func createUser(ctx context.Context, authClient pb.AuthServiceClient) {

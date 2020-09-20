@@ -3,6 +3,7 @@ module manager
 go 1.13
 
 require (
+	cloud.google.com/go v0.63.0
 	github.com/aws/aws-sdk-go v1.29.15
 	github.com/golang/protobuf v1.4.2
 	github.com/google/protobuf v3.13.0+incompatible // indirect

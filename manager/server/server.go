@@ -1,9 +1,9 @@
 package server
 
 import (
-	"context"
 	"fmt"
 	"manager/database"
+	"manager/interceptor"
 	laptop "manager/pb"
 	imageservice "manager/service/image"
 	laptopservice "manager/service/laptop"
@@ -50,20 +50,6 @@ func (server *Server) StartHTTPServer() (net.Listener, error) {
 	return listener, nil
 }
 
-func unaryServerInterceptor(
-	ctx context.Context,
-	req interface{},
-	info *grpc.UnaryServerInfo,
-	handler grpc.UnaryHandler,
-) (resp interface{}, err error) {
-	fmt.Println("hello world i am called again.")
-
-	fmt.Println(req)
-	fmt.Println(ctx)
-
-	return handler(ctx, req)
-}
-
 // StartGrpcServer starts a new grpc server.
 func (server *Server) StartGrpcServer(listener net.Listener) error {
 	db, err := server.DBConnection()
@@ -80,10 +66,12 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 	// Initializes grpc server.
 	laptopServer := NewLaptopServer(laptopService, imageService)
 
+	authInterceptor := interceptor.NewAuthInterceptor()
 	// Initializes new grpc server.
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(unaryServerInterceptor),
+		grpc.UnaryInterceptor(authInterceptor.Unary()),
 	)
+
 	laptop.RegisterLaptopServiceServer(grpcServer, laptopServer)
 	reflection.Register(grpcServer)
 
