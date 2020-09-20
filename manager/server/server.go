@@ -58,6 +58,9 @@ func unaryServerInterceptor(
 ) (resp interface{}, err error) {
 	fmt.Println("hello world i am called again.")
 
+	fmt.Println(req)
+	fmt.Println(ctx)
+
 	return handler(ctx, req)
 }
 

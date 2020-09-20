@@ -4,6 +4,7 @@ import (
 	"auth/service"
 	"auth/store"
 	"fmt"
+	"time"
 
 	"net"
 
@@ -54,8 +55,10 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 	// 	return err
 	// }
 
+	jwtManager := service.NewJWTMnanager("Kushal", 30*time.Second)
+
 	userStore := store.NewUesrStore()
-	userService := service.NewUserService(userStore)
+	userService := service.NewUserService(userStore, jwtManager)
 
 	authServer := NewAuthServer(userService)
 

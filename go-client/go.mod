@@ -3,6 +3,7 @@ module client
 go 1.15
 
 require (
+	cloud.google.com/go v0.26.0
 	github.com/golang/protobuf v1.4.2
 	github.com/stretchr/testify v1.6.1
 	google.golang.org/genproto v0.0.0-20200918140846-d0d605568037 // indirect

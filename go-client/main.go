@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	authclient "client/authClient"
 	laptop "client/pb"
 	auth "client/pbauth"
 	"client/sample"
@@ -16,18 +17,24 @@ import (
 )
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+	authConn := createAuthConn()
+	authClient := authclient.NewAuthClient(authConn, "kushal", "kushal")
+	interceptor, err := authclient.NewAuthInterceptor(authClient, 30*time.Second)
+	if err != nil {
+		panic(err)
+	}
 
-	authClient := createAuthConn()
-	createUser(ctx, authClient)
+	serverConn, err := grpc.Dial("localhost:8080",
+		grpc.WithInsecure(),
+		grpc.WithUnaryInterceptor(interceptor.Unary()),
+	)
+	if err != nil {
+		panic(err)
+	}
 
-	// createdLaptop := createNewLaptop(ctx, laptopClient)
+	laptopClient := laptop.NewLaptopServiceClient(serverConn)
 
-	// fetchAllLaptop(ctx, laptopClient)
-
-	// uploadLaptopImage(ctx, laptopClient, createdLaptop)
-
+	createNewLaptop(context.Background(), laptopClient)
 }
 
 func createUser(ctx context.Context, authClient auth.AuthServiceClient) {
@@ -48,27 +55,13 @@ func createUser(ctx context.Context, authClient auth.AuthServiceClient) {
 	fmt.Println("Successfully created user")
 }
 
-func createServerConn() (*grpc.ClientConn, context.Context) {
-	conn, err := grpc.Dial("localhost:8080", grpc.WithInsecure())
-	if err != nil {
-		panic(err)
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	return conn, ctx
-}
-
-func createAuthConn() auth.AuthServiceClient {
+func createAuthConn() *grpc.ClientConn {
 	conn, err := grpc.Dial("localhost:8081", grpc.WithInsecure())
 	if err != nil {
 		panic(err)
 	}
 
-	authClient := auth.NewAuthServiceClient(conn)
-
-	return authClient
+	return conn
 }
 
 // createNewLaptop creates new laptop.

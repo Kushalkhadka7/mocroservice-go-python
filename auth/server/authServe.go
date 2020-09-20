@@ -21,7 +21,6 @@ func NewAuthServer(userService service.UserService) *AuthServer {
 
 // CreateUser creates new user.
 func (server *AuthServer) CreateUser(ctx context.Context, req *auth.CreateUserRequest) (*auth.CreateUserResponse, error) {
-	fmt.Println("i am called")
 	fmt.Println(req.User)
 	res, err := server.UserService.SaveUser(ctx, req.User)
 	if err != nil {
@@ -34,5 +33,19 @@ func (server *AuthServer) CreateUser(ctx context.Context, req *auth.CreateUserRe
 
 	return &auth.CreateUserResponse{
 		Success: "Success",
+	}, nil
+}
+
+func (server *AuthServer) VerifyUser(ctx context.Context, req *auth.VerifyUserTokenRequest) (*auth.VerifyUserTokenResponse, error) {
+	res, err := server.UserService.VerifyUser(ctx, req)
+	if err != nil {
+		fmt.Println("i am called1")
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return &auth.VerifyUserTokenResponse{
+		Name: res.UserName,
+		Role: res.Role,
 	}, nil
 }
