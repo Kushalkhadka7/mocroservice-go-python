@@ -1,23 +1,23 @@
 package sample
 
 import (
-	laptop "client/pb"
+	pb "client/pb"
 	"math/rand"
 )
 
-func getRandomKeyboardLayout() laptop.Keyboard_Layout {
+func getRandomKeyboardLayout() pb.Keyboard_Layout {
 	switch rand.Intn(3) {
 	case 1:
-		return laptop.Keyboard_AZWETY
+		return pb.Keyboard_AZWETY
 
 	case 2:
-		return laptop.Keyboard_QWERTY
+		return pb.Keyboard_QWERTY
 
 	case 3:
-		return laptop.Keyboard_QWETRZ
+		return pb.Keyboard_QWETRZ
 
 	default:
-		return laptop.Keyboard_QWERTY
+		return pb.Keyboard_QWERTY
 	}
 }
 
@@ -62,45 +62,45 @@ func getGPUBrand() string {
 	return brand[index]
 }
 
-func getRandomMemory() laptop.Memory_Unit {
+func getRandomMemory() pb.Memory_Unit {
 	switch rand.Intn(3) {
 	case 1:
-		return laptop.Memory_GITABYTE
+		return pb.Memory_GITABYTE
 
 	case 2:
-		return laptop.Memory_MEGABYTE
+		return pb.Memory_MEGABYTE
 
 	case 3:
-		return laptop.Memory_KILOBYTE
+		return pb.Memory_KILOBYTE
 
 	default:
-		return laptop.Memory_KILOBYTE
+		return pb.Memory_KILOBYTE
 	}
 }
 
-func getStorageDriver() laptop.Storage_Driver {
+func getStorageDriver() pb.Storage_Driver {
 	switch rand.Intn(2) {
 	case 1:
-		return laptop.Storage_HDD
+		return pb.Storage_HDD
 
 	case 2:
-		return laptop.Storage_SSD
+		return pb.Storage_SSD
 
 	default:
-		return laptop.Storage_SSD
+		return pb.Storage_SSD
 	}
 }
 
-func getScreenPanel() laptop.Screen_Panel {
+func getScreenPanel() pb.Screen_Panel {
 	switch rand.Intn(2) {
 	case 1:
-		return laptop.Screen_IPS
+		return pb.Screen_IPS
 
 	case 2:
-		return laptop.Screen_OLED
+		return pb.Screen_OLED
 
 	default:
-		return laptop.Screen_IPS
+		return pb.Screen_IPS
 	}
 }
 

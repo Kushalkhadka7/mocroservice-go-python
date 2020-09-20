@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = ".;___pb";
+
+import "proto/user.proto";
+
+message CreateUserRequest{
+    User user = 1;
+}
+
+message CreateUserResponse{
+    string success = 1;
+}
+
+message VerifyUserTokenRequest{
+    string access_token = 1;
+}
+
+message VerifyUserTokenResponse{
+    string name = 1;
+    string role = 2;
+    string access_token = 3;
+}
+
+
+service AuthService{
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
+    rpc VerifyUser (VerifyUserTokenRequest) returns (VerifyUserTokenResponse){}
+}

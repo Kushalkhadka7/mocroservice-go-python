@@ -2,7 +2,7 @@ package service
 
 import (
 	"auth/model"
-	auth "auth/pbauth"
+	pb "auth/pb"
 	"auth/store"
 	"context"
 	"fmt"
@@ -15,8 +15,8 @@ import (
 
 // UserService interface to implement.
 type UserService interface {
-	SaveUser(ctx context.Context, req *auth.User) (*model.User, error)
-	VerifyUser(ctx context.Context, req *auth.VerifyUserTokenRequest) (*UserInfo, error)
+	SaveUser(ctx context.Context, req *pb.User) (*model.User, error)
+	VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*UserInfo, error)
 }
 
 // CreateUserService initializes user service.
@@ -34,7 +34,7 @@ func NewUserService(store store.UserStore, jwtManger *JWTManager) UserService {
 }
 
 // SaveUser create and save new user.
-func (service *CreateUserService) SaveUser(ctx context.Context, req *auth.User) (*model.User, error) {
+func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (*model.User, error) {
 	hashedPasswored, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println("i am called2")
@@ -71,7 +71,7 @@ func (service *CreateUserService) SaveUser(ctx context.Context, req *auth.User) 
 	return res, nil
 }
 
-func (service *CreateUserService) VerifyUser(ctx context.Context, req *auth.VerifyUserTokenRequest) (*UserInfo, error) {
+func (service *CreateUserService) VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*UserInfo, error) {
 	accessToken := req.AccessToken
 
 	userInfo, err := service.JWTManager.VerifyToken(accessToken)

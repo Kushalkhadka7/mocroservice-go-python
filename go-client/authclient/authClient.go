@@ -1,7 +1,7 @@
 package authclient
 
 import (
-	pb "client/pbauth"
+	pb "client/pb"
 	"time"
 
 	"context"

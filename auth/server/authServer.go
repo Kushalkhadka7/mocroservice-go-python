@@ -1,7 +1,7 @@
 package server
 
 import (
-	auth "auth/pbauth"
+	pb "auth/pb"
 	"auth/service"
 	"context"
 	"fmt"
@@ -20,8 +20,7 @@ func NewAuthServer(userService service.UserService) *AuthServer {
 }
 
 // CreateUser creates new user.
-func (server *AuthServer) CreateUser(ctx context.Context, req *auth.CreateUserRequest) (*auth.CreateUserResponse, error) {
-	fmt.Println(req.User)
+func (server *AuthServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	res, err := server.UserService.SaveUser(ctx, req.User)
 	if err != nil {
 		fmt.Println("i am called1")
@@ -31,12 +30,12 @@ func (server *AuthServer) CreateUser(ctx context.Context, req *auth.CreateUserRe
 
 	fmt.Println(res)
 
-	return &auth.CreateUserResponse{
+	return &pb.CreateUserResponse{
 		Success: "Success",
 	}, nil
 }
 
-func (server *AuthServer) VerifyUser(ctx context.Context, req *auth.VerifyUserTokenRequest) (*auth.VerifyUserTokenResponse, error) {
+func (server *AuthServer) VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*pb.VerifyUserTokenResponse, error) {
 	res, err := server.UserService.VerifyUser(ctx, req)
 	if err != nil {
 		fmt.Println("i am called1")
@@ -44,7 +43,7 @@ func (server *AuthServer) VerifyUser(ctx context.Context, req *auth.VerifyUserTo
 		return nil, err
 	}
 
-	return &auth.VerifyUserTokenResponse{
+	return &pb.VerifyUserTokenResponse{
 		Name: res.UserName,
 		Role: res.Role,
 	}, nil

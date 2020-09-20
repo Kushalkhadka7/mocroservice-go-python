@@ -8,7 +8,7 @@ import (
 
 	"net"
 
-	auth "auth/pbauth"
+	pb "auth/pb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -64,7 +64,7 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 
 	// // Initializes new grpc server.
 	grpcServer := grpc.NewServer()
-	auth.RegisterAuthServiceServer(grpcServer, authServer)
+	pb.RegisterAuthServiceServer(grpcServer, authServer)
 	reflection.Register(grpcServer)
 
 	if err := grpcServer.Serve(listener); err != nil {

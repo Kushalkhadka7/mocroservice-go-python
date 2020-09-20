@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package auth;
+package pb;
 
-option go_package = ".;___auth";
+option go_package = ".;___pb";
 
-import "authproto/user.proto";
+import "proto/user.proto";
 
 message CreateUserRequest{
     User user = 1;
