@@ -35,6 +35,7 @@ func (server *AuthServer) CreateUser(ctx context.Context, req *pb.CreateUserRequ
 	}, nil
 }
 
+// VerifyUser verifies the logged in user access token.
 func (server *AuthServer) VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*pb.VerifyUserTokenResponse, error) {
 	fmt.Println(req)
 	res, err := server.UserService.VerifyUser(ctx, req)

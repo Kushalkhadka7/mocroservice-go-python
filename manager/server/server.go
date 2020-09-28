@@ -8,18 +8,20 @@ import (
 	imageservice "manager/service/image"
 	laptopservice "manager/service/laptop"
 	store "manager/store"
+	"manager/util"
 	"net"
 
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
 )
 
 const dbPort = 27017
 const dbName = "mircoservices"
 const dbPassword = "Kushal123"
-const dbURI = "mongodb://localhost:27017"
+const dbURI = "mongodb://mongodb:27017"
 
 // Server takes port and initialize http server on the port.
 type Server struct {
@@ -42,7 +44,7 @@ func New(port int) Creator {
 func (server *Server) StartHTTPServer() (net.Listener, error) {
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", server.Port))
 	if err != nil {
-		return nil, fmt.Errorf("Cannot establish http server connection:%v", err)
+		return nil, util.Error(codes.Internal, "Cannot establish http server connection:%v", err)
 	}
 
 	fmt.Printf("Server listening on port:%d", server.Port)
@@ -76,7 +78,7 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 	reflection.Register(grpcServer)
 
 	if err := grpcServer.Serve(listener); err != nil {
-		return err
+		return util.Error(codes.PermissionDenied, "Unable to start grpc server connection.\n %v", err)
 	}
 
 	return nil
@@ -88,7 +90,7 @@ func (server *Server) DBConnection() (*mongo.Database, error) {
 	monogDB := database.New(dbPort, dbURI, dbName, dbPassword)
 	dbClient, err := monogDB.CreateClient()
 	if err != nil {
-		return nil, err
+		return nil, util.Error(codes.PermissionDenied, "Unable to start database connection.\n %v", err)
 	}
 
 	db := monogDB.InitializeDatabase(dbClient)

@@ -37,7 +37,6 @@ func NewUserService(store store.UserStore, jwtManger *JWTManager) UserService {
 func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (string, error) {
 	hashedPasswored, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		fmt.Println("i am called2")
 		fmt.Println(err)
 		return "", status.Errorf(codes.Internal, "Unable to bcrypt password %v", err)
 	}
@@ -46,6 +45,7 @@ func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (s
 	fmt.Println(user)
 
 	token, err := service.JWTManager.GenerateToken(user)
+	// Save user to database.
 	if err != nil {
 		fmt.Println(err)
 		return "", err
@@ -54,6 +54,7 @@ func (service *CreateUserService) SaveUser(ctx context.Context, req *pb.User) (s
 	return token, nil
 }
 
+// VerifyUser verifies the user access token.
 func (service *CreateUserService) VerifyUser(ctx context.Context, req *pb.VerifyUserTokenRequest) (*UserInfo, error) {
 	accessToken := req.AccessToken
 

@@ -2,10 +2,11 @@ package laptopservice
 
 import (
 	"context"
-	"google.golang.org/grpc/codes"
 	laptop "manager/pb"
-	"manager/store"
+	laptopstore "manager/store"
 	"manager/util"
+
+	"google.golang.org/grpc/codes"
 )
 
 // LaptopService interface to implement laptop service.

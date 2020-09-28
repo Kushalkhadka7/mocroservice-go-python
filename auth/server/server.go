@@ -14,11 +14,6 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-const dbPort = 27017
-const dbName = "mircoservices"
-const dbPassword = "Kushal123"
-const dbURI = "mongodb://localhost:27017"
-
 // Server takes port and initialize http server on the port.
 type Server struct {
 	Port int
@@ -27,7 +22,6 @@ type Server struct {
 // Creator interface creates and initializes http and grpc server.
 type Creator interface {
 	StartHTTPServer() (net.Listener, error)
-	// DBConnection() (*mongo.Database, error)
 	StartGrpcServer(listener net.Listener) error
 }
 
@@ -50,10 +44,6 @@ func (server *Server) StartHTTPServer() (net.Listener, error) {
 
 // StartGrpcServer starts a new grpc server.
 func (server *Server) StartGrpcServer(listener net.Listener) error {
-	// db, err := server.DBConnection()
-	// if err != nil {
-	// 	return err
-	// }
 
 	jwtManager := service.NewJWTMnanager("Kushal", 30*time.Second)
 
@@ -62,7 +52,7 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 
 	authServer := NewAuthServer(userService)
 
-	// // Initializes new grpc server.
+	// Initializes new grpc server.
 	grpcServer := grpc.NewServer()
 	pb.RegisterAuthServiceServer(grpcServer, authServer)
 	reflection.Register(grpcServer)
@@ -73,17 +63,3 @@ func (server *Server) StartGrpcServer(listener net.Listener) error {
 
 	return nil
 }
-
-// DBConnection initializes new database connection.
-// func (server *Server) DBConnection() (*mongo.Database, error) {
-// Creates database instance on the give port.
-// monogDB := database.New(dbPort, dbURI, dbName, dbPassword)
-// dbClient, err := monogDB.CreateClient()
-// if err != nil {
-// return nil, err
-// }
-//
-// db := monogDB.InitializeDatabase(dbClient)
-//
-// return db, nil
-// }

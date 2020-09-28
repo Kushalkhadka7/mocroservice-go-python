@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"google.golang.org/grpc/codes"
 	"io"
 	"log"
 	laptop "manager/pb"
 	laptopservice "manager/service/laptop"
 	laptopstore "manager/store"
 	"manager/util"
+
+	"google.golang.org/grpc/codes"
 )
 
 const maxImageSize = 1 << 20
@@ -33,7 +34,6 @@ func NewImageService(store laptopstore.ImageStore, laptopService laptopservice.L
 
 // Save image to imaage store.
 func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageServer) (*laptop.UploadImageResponse, error) {
-	fmt.Println("hello i am called here")
 
 	req, err := stream.Recv()
 	if err != nil {
@@ -46,9 +46,9 @@ func (service *ImageService) Save(stream laptop.LaptopService_UploadLaptopImageS
 
 	result, err := service.LaptopService.FindLaptop(context.Background(), laptopID)
 	if err != nil {
-
 		return nil, err
 	}
+
 	fmt.Println(result)
 
 	imageData := bytes.Buffer{}

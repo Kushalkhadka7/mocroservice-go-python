@@ -29,6 +29,7 @@ func NewLaptopServer(laptopStore laptopservice.LaptopService, imageStore imagese
 // CreateLaptop creates new laptop.
 func (service *LaptopServer) CreateLaptop(ctx context.Context, req *laptop.CreateLaptopRequest) (*laptop.CreateLaptopResponse, error) {
 	log.Println("Request received to create new laptop.")
+
 	result, err := service.LaptopService.SaveLaptop(context.Background(), req.Laptop)
 	if err != nil {
 		return nil, err
@@ -47,8 +48,7 @@ func (service *LaptopServer) SayHello(ctx context.Context, req *laptop.Hello) (*
 
 	result, err := service.LaptopService.SaveLaptop(context.Background(), sample)
 	if err != nil {
-		fmt.Println(err)
-		panic(err)
+		return nil, err
 	}
 
 	sample.XId = result

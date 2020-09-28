@@ -40,6 +40,7 @@ func (client *LaptopClient) CreateNewLaptop() *pb.Laptop {
 	req := &pb.CreateLaptopRequest{
 		Laptop: sample.NewLaptop(),
 	}
+
 	res, err := client.service.CreateLaptop(client.context, req)
 	if err != nil {
 		panic(err)

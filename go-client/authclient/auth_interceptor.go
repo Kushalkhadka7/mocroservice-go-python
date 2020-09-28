@@ -10,11 +10,13 @@ import (
 	"google.golang.org/grpc"
 )
 
+// AuthInterceptor initializes new auth interceptor .
 type AuthInterceptor struct {
 	authClient  *AuthClient
 	accessToken string
 }
 
+// NewAuthInterceptor creates new interceprtor.
 func NewAuthInterceptor(authClient *AuthClient, refreshDuration time.Duration) (*AuthInterceptor, error) {
 	interceptor := &AuthInterceptor{
 		authClient: authClient,
@@ -28,6 +30,7 @@ func NewAuthInterceptor(authClient *AuthClient, refreshDuration time.Duration) (
 	return interceptor, nil
 }
 
+// Unary creates new unary interceptor.
 func (interceptor *AuthInterceptor) Unary() grpc.UnaryClientInterceptor {
 
 	return func(
@@ -39,17 +42,19 @@ func (interceptor *AuthInterceptor) Unary() grpc.UnaryClientInterceptor {
 		invoker grpc.UnaryInvoker,
 		opts ...grpc.CallOption,
 	) error {
-		log.Printf("------->unary interceptor: %s", method)
+		log.Printf("-------unary interceptor: %s -------", method)
 
 		return invoker(interceptor.attachToken(ctx), method, req, reply, cc, opts...)
 	}
 
 }
 
+// attachToken to the context of the request going to the server.
 func (interceptor *AuthInterceptor) attachToken(ctx context.Context) context.Context {
 	return metadata.AppendToOutgoingContext(ctx, "authorization", interceptor.accessToken)
 }
 
+// scheduleRefreshToken refresh the token in given time interval.
 func (interceptor *AuthInterceptor) scheduleRefreshToken(duration time.Duration) error {
 
 	err := interceptor.refreshToken()
@@ -75,6 +80,7 @@ func (interceptor *AuthInterceptor) scheduleRefreshToken(duration time.Duration)
 
 }
 
+// refreshToken refreshes the token.b
 func (interceptor *AuthInterceptor) refreshToken() error {
 	accessToken, err := interceptor.authClient.Login()
 	if err != nil {

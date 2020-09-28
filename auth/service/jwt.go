@@ -8,17 +8,20 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// JWTManager initializes new jwt manager.
 type JWTManager struct {
 	secretKey     string
 	tokenDuration time.Duration
 }
 
+// UserInfo initializes user info.
 type UserInfo struct {
 	jwt.StandardClaims
 	UserName string `json:"userName"`
 	Role     string `json:"role"`
 }
 
+// NewJWTMnanager creates new jwt manager.
 func NewJWTMnanager(secretKey string, duration time.Duration) *JWTManager {
 	return &JWTManager{
 		secretKey:     secretKey,
@@ -26,6 +29,7 @@ func NewJWTMnanager(secretKey string, duration time.Duration) *JWTManager {
 	}
 }
 
+// GenerateToken generates new jwt token.
 func (jwtManager *JWTManager) GenerateToken(user *model.User) (string, error) {
 	claims := UserInfo{
 		StandardClaims: jwt.StandardClaims{
@@ -40,6 +44,7 @@ func (jwtManager *JWTManager) GenerateToken(user *model.User) (string, error) {
 	return token.SignedString([]byte(jwtManager.secretKey))
 }
 
+// VerifyToken verifies the generated jwt token.
 func (jwtManager *JWTManager) VerifyToken(accessToken string) (*UserInfo, error) {
 	token, err := jwt.ParseWithClaims(
 		accessToken,
