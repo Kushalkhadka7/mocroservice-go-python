@@ -36,7 +36,7 @@ func (interceptor *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {
 
 		values := md["authorization"]
 		if len(values) == 0 {
-			return nil, util.Error(codes.PermissionDenied, "Unauthorized, No authorization mechanism provided.", err)
+			return nil, util.Error(codes.Internal, "Unauthorized, No authorization mechanism provided.", err)
 		}
 
 		accessToken := values[0]
@@ -80,7 +80,7 @@ func (interceptor *AuthInterceptor) Stream() grpc.StreamServerInterceptor {
 
 // createAuthClient creates new auth client.
 func createAuthClient() (pb.AuthServiceClient, error) {
-	serverConn, err := grpc.Dial("auth:8081",
+	serverConn, err := grpc.Dial("auth:6001",
 		grpc.WithInsecure(),
 	)
 	if err != nil {

@@ -19,7 +19,7 @@ FROM golang
 
 COPY --from=builder /app/auth /app/
 
-EXPOSE 8081
+EXPOSE 6001
 
 ENTRYPOINT ["/app/auth"]
 

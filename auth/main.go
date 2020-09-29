@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	port := flag.Int("port", 8081, "port to run the http server")
+	port := flag.Int("port", 6001, "port to run the http server")
 	flag.Parse()
 
 	server := server.New(*port)

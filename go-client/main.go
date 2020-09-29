@@ -3,6 +3,7 @@ package main
 import (
 	"client/authclient"
 	"client/laptopclient"
+	"fmt"
 	"time"
 
 	"google.golang.org/grpc"
@@ -18,6 +19,8 @@ func main() {
 
 	interceptor, err := authclient.NewAuthInterceptor(authClient, 30*time.Second)
 	if err != nil {
+
+		fmt.Println(err)
 		panic(err)
 	}
 
@@ -34,7 +37,7 @@ func main() {
 }
 
 func createAuthConn() (*grpc.ClientConn, error) {
-	conn, err := grpc.Dial("localhost:8081", grpc.WithInsecure())
+	conn, err := grpc.Dial("localhost:8080", grpc.WithInsecure())
 	if err != nil {
 		return nil, err
 	}
