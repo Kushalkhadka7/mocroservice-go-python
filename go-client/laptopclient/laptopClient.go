@@ -8,8 +8,6 @@ import (
 	"io"
 	"log"
 	"os"
-
-	"google.golang.org/grpc"
 )
 
 // LaptopClient initializes new laptop client.
@@ -26,8 +24,7 @@ type Creator interface {
 }
 
 // NewLapotpClient creates new laptop client.
-func NewLapotpClient(conn *grpc.ClientConn) Creator {
-	service := pb.NewLaptopServiceClient(conn)
+func NewLapotpClient(service pb.LaptopServiceClient) Creator {
 
 	return &LaptopClient{
 		service: service,
@@ -45,10 +42,6 @@ func (client *LaptopClient) CreateNewLaptop() *pb.Laptop {
 	if err != nil {
 		panic(err)
 	}
-
-	log.Println(res.Laptop)
-	log.Println(res.Laptop.GetXId())
-	log.Println("Laptop created successfully")
 
 	return res.Laptop
 }

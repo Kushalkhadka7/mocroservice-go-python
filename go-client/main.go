@@ -30,7 +30,8 @@ func main() {
 		panic(err)
 	}
 
-	laptopClient := laptopclient.NewLapotpClient(serverConn)
+	service := pb.NewLaptopServiceClient(serverConn)
+	laptopClient := laptopclient.NewLapotpClient(service)
 
 	// Calls server methods.
 	laptopClient.CreateNewLaptop()
