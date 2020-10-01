@@ -2,33 +2,34 @@ package server_test
 
 import (
 	"context"
-	"manager/util"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/grpc/codes"
 	laptop "manager/pb"
 	"manager/sample"
 	"manager/server"
+	"manager/util"
 	"testing"
+
+	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/codes"
 )
 
 type MockLaptopService struct{}
 
 // Mock save laptop funciton.
 func (service MockLaptopService) SaveLaptop(ctx context.Context, laptop *laptop.Laptop) (string, error) {
-	oid,err:= util.GenerateOID("new Laptop")
-	if err!=nil {
-		return"",err
+	oid, err := util.GenerateOID("new Laptop")
+	if err != nil {
+		return "", err
 	}
 
-	return oid,nil
+	return oid, nil
 }
-func(service *MockLaptopService)FetchAllLaptops(ctx context.Context) ([]*laptop.Laptop, error){
-	return nil,nil
+func (service *MockLaptopService) FetchAllLaptops(ctx context.Context) ([]*laptop.Laptop, error) {
+	return nil, nil
 }
-func(service *MockLaptopService)FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error){
-	return nil,nil
+func (service *MockLaptopService) FindLaptop(ctx context.Context, laptopID string) (*laptop.Laptop, error) {
+	return nil, nil
 }
-func(service *MockLaptopService)UpdateLaptop(ctx context.Context, laptopID string, imageID string) error{
+func (service *MockLaptopService) UpdateLaptop(ctx context.Context, laptopID string, imageID string) error {
 	return nil
 }
 
@@ -109,4 +110,3 @@ func TestCreateLapotp(t *testing.T) {
 		})
 	}
 }
-
