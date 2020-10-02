@@ -1,0 +1,3 @@
+id,brand,name,cpu,ram,gpus,storage,keyboard,weight,price_usd
+,Dell,Dell,Intel,8gb,nvidia,5 gb ,backlight,5 kg ,1000
+,Lenove,Lenove,Arm,12gb,Radeon,15 gb ,backlight_keyboard,2 kg ,1200
