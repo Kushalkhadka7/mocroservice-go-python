@@ -1,55 +1,55 @@
 version: "3"
 
 services:
-  manager:
-    container_name: manager
-    build: ../manager/.
-    restart: always
-    ports:
-      - "5001:5001"
-    expose:
-      - "5001"
-    volumes:
-      - .env.docker:/app/.env
-    depends_on:
-      - mongodb
-      - auth
-    links:
-      - mongodb
-      - auth
-    networks:
-      - backend
-      - frontend
-  auth:
-    container_name: auth
-    build: ../auth/.
-    restart: always
-    ports:
-      - "6001:6001"
-    expose:
-      - "6001"
-    volumes:
-      - .env.docker:/app/.env
-    networks:
-      - frontend
-  nginx:
-    container_name: nginx
-    build: ../nginx/.
-    restart: always
-    ports:
-      - "8080:80"
-      - "443:443"
-    volumes:
-      - ../nginx/conf.d/nginx.conf/:/etc/nginx/nginx.conf
-    expose:
-      - "8080"
-      - "80"
-      - "443"
-    networks:
-      - frontend
-    depends_on:
-      - auth
-      - manager
+  # manager:
+  #   container_name: manager
+  #   build: ../manager/.
+  #   restart: always
+  #   ports:
+  #     - "5001:5001"
+  #   expose:
+  #     - "5001"
+  #   volumes:
+  #     - .env.docker:/app/.env
+  #   depends_on:
+  #     - mongodb
+  #     - auth
+  #   links:
+  #     - mongodb
+  #     - auth
+  #   networks:
+  #     - backend
+  #     - frontend
+  # auth:
+  #   container_name: auth
+  #   build: ../auth/.
+  #   restart: always
+  #   ports:
+  #     - "6001:6001"
+  #   expose:
+  #     - "6001"
+  #   volumes:
+  #     - .env.docker:/app/.env
+  #   networks:
+  #     - frontend
+  # nginx:
+  #   container_name: nginx
+  #   build: ../nginx/.
+  #   restart: always
+  #   ports:
+  #     - "8080:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ../nginx/conf.d/nginx.conf/:/etc/nginx/nginx.conf
+  #   expose:
+  #     - "8080"
+  #     - "80"
+  #     - "443"
+  #   networks:
+  #     - frontend
+  #   depends_on:
+  #     - auth
+  #     - manager
   mongodb:
     container_name: mongodb
     build: ../mongodb/.
@@ -61,16 +61,6 @@ services:
     networks:
       - backend
 
-  airflow:
-    container_name: airflow
-    image: puckel/docker-airflow
-    restart: always
-    ports:
-      - "7000:8080"
-    volumes:
-      - .env.docker:/app/.env
-    networks:
-      - backend
 networks:
   backend:
     driver: bridge

@@ -1,1 +1,0 @@
-{"0": {"id": "", "brand": "Dell", "name": "Dell", "cpu": "Intel", "ram": "8gb", "gpus": "nvidia", "storage": "5 gb ", "keyboard": "backlight", "weight": "5 kg ", "price_usd": "1000"}, "1": {"id": "", "brand": "Lenove", "name": "Lenove", "cpu": "Arm", "ram": "12gb", "gpus": "Radeon", "storage": "15 gb ", "keyboard": "backlight_keyboard", "weight": "2 kg ", "price_usd": "1200"}}

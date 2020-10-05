@@ -23,10 +23,12 @@ services:
       options:
         max-size: 10m
         max-file: "3"
+    command: bash -c "pip install pymongo"
     volumes:
       - ./constants:/usr/local/airflow/constants
       - ./dags:/usr/local/airflow/dags
       - ./files:/tmp
+      - ./utils:/usr/local/airflow/utils
     ports:
       - "7000:8080"
     command: webserver
